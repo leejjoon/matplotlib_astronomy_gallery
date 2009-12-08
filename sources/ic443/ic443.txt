@@ -1,0 +1,9 @@
+
+IC443 Radio Continuum
+=====================
+
+* requires matplotlib >= 0.99.1
+* data file currently not available 
+
+.. plot:: ic443/figure_ic443_radio_continuum.py
+   :include-source:
