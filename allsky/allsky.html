@@ -67,27 +67,27 @@
 
 <span class="k">def</span> <span class="nf">allsky_header</span><span class="p">():</span>
     <span class="c"># header retrieved from &quot;lambda_mollweide_halpha_fwhm06_0512.fits&quot;</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;XTENSION= &#39;IMAGE   &#39;           / IMAGE extension               </span>
-<span class="s">BITPIX  =                  -32 / Number of bits per data pixel                  </span>
-<span class="s">NAXIS   =                    2 / Number of data axes                            </span>
-<span class="s">NAXIS1  =                 4096 /                                                </span>
-<span class="s">NAXIS2  =                 2048 /                                                </span>
-<span class="s">PCOUNT  =                    0 / No Group Parameters                            </span>
-<span class="s">GCOUNT  =                    1 / One Data Group                                 </span>
-<span class="s">EXTNAME = &#39;TEMPERATURE&#39;                                                         </span>
-<span class="s">CTYPE1  = &#39;GLON-MOL&#39;           / Coordinate Type                                </span>
-<span class="s">CTYPE2  = &#39;GLAT-MOL&#39;           / Coordinate Type                                </span>
-<span class="s">EQUINOX =              2000.00 / Equinox of Ref. Coord.                         </span>
-<span class="s">CDELT1  =     -0.0791293637247 / Degrees / Pixel                                </span>
-<span class="s">CDELT2  =      0.0791293637247 / Degrees / Pixel                                </span>
-<span class="s">CROTA2  =              0.00000 / Rotation Angle (Degrees)                       </span>
-<span class="s">CRPIX1  =              2048.50 / Reference Pixel in X                           </span>
-<span class="s">CRPIX2  =              1024.50 / Reference Pixel in Y                           </span>
-<span class="s">CRVAL1  =        0.00000000000 / Galactic longitude of reference pixel          </span>
-<span class="s">CRVAL2  =        0.00000000000 / Galactic latitude of reference pixel           </span>
-<span class="s">LONPOLE =        0.00000000000 / Native longitude of Galactic pole              </span>
-<span class="s">LATPOLE =        0.00000000000 / Galactic latitude of native pole               </span>
-<span class="s">PV2_1   =        0.00000000000 /Projection parameter 1                          </span>
+    <span class="n">header</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;XTENSION= &#39;IMAGE   &#39;           / IMAGE extension</span>
+<span class="s">BITPIX  =                  -32 / Number of bits per data pixel</span>
+<span class="s">NAXIS   =                    2 / Number of data axes</span>
+<span class="s">NAXIS1  =                 4096 /</span>
+<span class="s">NAXIS2  =                 2048 /</span>
+<span class="s">PCOUNT  =                    0 / No Group Parameters</span>
+<span class="s">GCOUNT  =                    1 / One Data Group</span>
+<span class="s">EXTNAME = &#39;TEMPERATURE&#39;</span>
+<span class="s">CTYPE1  = &#39;GLON-MOL&#39;           / Coordinate Type</span>
+<span class="s">CTYPE2  = &#39;GLAT-MOL&#39;           / Coordinate Type</span>
+<span class="s">EQUINOX =              2000.00 / Equinox of Ref. Coord.</span>
+<span class="s">CDELT1  =     -0.0791293637247 / Degrees / Pixel</span>
+<span class="s">CDELT2  =      0.0791293637247 / Degrees / Pixel</span>
+<span class="s">CROTA2  =              0.00000 / Rotation Angle (Degrees)</span>
+<span class="s">CRPIX1  =              2048.50 / Reference Pixel in X</span>
+<span class="s">CRPIX2  =              1024.50 / Reference Pixel in Y</span>
+<span class="s">CRVAL1  =        0.00000000000 / Galactic longitude of reference pixel</span>
+<span class="s">CRVAL2  =        0.00000000000 / Galactic latitude of reference pixel</span>
+<span class="s">LONPOLE =        0.00000000000 / Native longitude of Galactic pole</span>
+<span class="s">LATPOLE =        0.00000000000 / Galactic latitude of native pole</span>
+<span class="s">PV2_1   =        0.00000000000 /Projection parameter 1</span>
 <span class="s">HISTORY PUTAST: Jun 17 14:36:35 2009 World Coordinate System parameters written</span>
 <span class="s">&quot;&quot;&quot;</span>
     <span class="n">cards</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">CardList</span><span class="p">()</span>
@@ -111,7 +111,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="n">header</span> <span class="o">=</span> <span class="n">allsky_header</span><span class="p">()</span>
-        
+
 
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">8</span><span class="p">,</span> <span class="mf">5</span><span class="p">))</span>
     <span class="n">fig</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
@@ -145,29 +145,30 @@
     <span class="c">#for an in [&quot;bottom&quot;, &quot;top&quot;]:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;bottom&quot;</span><span class="p">,</span> <span class="s">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
 
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;right&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_axis_direction</span><span class="p">(</span><span class="s">&quot;left&quot;</span><span class="p">)</span>
+
     <span class="n">axis</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;left&quot;</span><span class="p">]</span>
     <span class="n">axis</span><span class="o">.</span><span class="n">set_axis_direction</span><span class="p">(</span><span class="s">&quot;right&quot;</span><span class="p">)</span>
     <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">_text_follow_ref_angle</span><span class="o">=</span><span class="bp">False</span>
-    <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set_rotation</span><span class="p">(</span><span class="mf">0</span><span class="p">)</span>
-    <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">)</span>
-    <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set_pad</span><span class="p">(</span><span class="mf">0</span><span class="p">)</span> <span class="c">#(va=&quot;center&quot;, ha=&quot;center&quot;)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mf">0</span><span class="p">,</span>
+                              <span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+                              <span class="n">pad</span><span class="o">=</span><span class="mf">0</span><span class="p">)</span>
     <span class="n">axis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">_text_follow_ref_angle</span><span class="o">=</span><span class="bp">False</span>
     <span class="n">axis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mf">0</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&quot;right&quot;</span><span class="p">)</span>
 
-    <span class="n">axis</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;right&quot;</span><span class="p">]</span>
-    <span class="n">axis</span><span class="o">.</span><span class="n">set_axis_direction</span><span class="p">(</span><span class="s">&quot;left&quot;</span><span class="p">)</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_helper</span><span class="o">.</span><span class="n">new_floating_axis</span><span class="p">(</span><span class="n">nth_coord</span><span class="o">=</span><span class="mf">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mf">0</span><span class="p">,</span>
                                                    <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
                                                    <span class="n">axis_direction</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">)</span>
+
     <span class="n">axis</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">get_helper</span><span class="p">()</span><span class="o">.</span><span class="n">set_extremes</span><span class="p">(</span><span class="o">-</span><span class="mf">180</span><span class="p">,</span> <span class="mf">180</span><span class="p">)</span>
 
     <span class="n">ef</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">patheffects</span><span class="o">.</span><span class="n">withStroke</span><span class="p">(</span><span class="n">foreground</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3</span><span class="p">)</span>
     <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">ef</span><span class="p">])</span>
     <span class="n">axis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">ef</span><span class="p">])</span>
 
     <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
