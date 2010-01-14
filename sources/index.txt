@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Matplotlib Gallery For Astronomy
-================================
+JJ's Matplotlib Gallery For Astronomy
+=====================================
 
 
 * IC443 Radio Continuum
@@ -12,11 +12,20 @@ Matplotlib Gallery For Astronomy
 .. image:: images/figure_ic443_radio_continuum.png
    :target: ic443/ic443.html
 
+* IC443 CO RGB Composite
+
+.. image:: images/ic443_co_rgb.png
+   :target: ic443/ic443_co_rgb.html
 
 * IC443 CO Channel Map
 
 .. image:: images/ic443_channel_map.png
    :target: ic443/ic443_channel_map.html
+
+* IC443 CO Stamps
+
+.. image:: images/ic443_stamps.png
+   :target: ic443/ic443_stamps.html
 
 
 * IC443 CO PV Map

@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IC443 CO RGB Composite &mdash; Matplotlib Gallery For Astronomy v0.1.1 documentation</title>
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="Matplotlib Gallery For Astronomy v0.1.1 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="ic443-co-rgb-composite">
+<h1>IC443 CO RGB Composite<a class="headerlink" href="#ic443-co-rgb-composite" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>requires the svn version of matplotlib( &gt; 0.99.1)</li>
+<li>data file currently not available</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyfits</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="c"># prepare dara</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;ic443_co.ambient.fits&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">jjpy.cube</span> <span class="kn">as</span> <span class="nn">cube</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">Cube</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">squash</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5e3</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.4e3</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s">&quot;sky&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;sum&quot;</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">squash</span><span class="p">(</span><span class="o">-</span><span class="mf">3.4e3</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.1e3</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s">&quot;sky&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;sum&quot;</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">squash</span><span class="p">(</span><span class="o">-</span><span class="mf">5.1e3</span><span class="p">,</span> <span class="o">-</span><span class="mf">7e3</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s">&quot;sky&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;sum&quot;</span><span class="p">)</span>
+
+<span class="n">f_radio</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;ic443.cont.clean_gull.immerge.nan.fits&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">f_radio</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">*</span><span class="mf">1000</span>
+    
+<span class="k">def</span> <span class="nf">mytrim</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">):</span>
+    <span class="n">dd</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="n">vmin</span><span class="p">)</span> <span class="o">/</span><span class="p">(</span><span class="n">vmin</span> <span class="o">+</span> <span class="n">vmax</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">1</span><span class="p">)</span>
+
+
+<span class="c"># draw figure</span>
+
+<span class="kn">import</span> <span class="nn">pywcsgrid2</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid.axes_rgb</span> <span class="kn">import</span> <span class="n">imshow_rgb</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pywcsgrid2</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mf">111</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">imshow_rgb</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span>
+               <span class="n">mytrim</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">7</span><span class="p">),</span>
+               <span class="n">mytrim</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">7</span><span class="p">),</span>
+               <span class="n">mytrim</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">7</span><span class="p">),</span>
+               <span class="n">origin</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&quot;nearest&quot;</span><span class="p">,</span>
+               <span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[:]</span><span class="o">.</span><span class="n">major_ticks</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+
+    
+<span class="n">cont</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">f_radio</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="mf">10</span><span class="p">,</span> <span class="mf">20</span><span class="p">,</span> <span class="mf">40</span><span class="p">,</span> <span class="mf">60</span><span class="p">,</span> <span class="mf">80</span><span class="p">],</span>
+                                     <span class="n">colors</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/ic443/ic443_co_rgb.py">source code</a>, <a class="reference external" href="../plot_directive/ic443/ic443_co_rgb.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/ic443/ic443_co_rgb.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../images/ic443_co_rgb.png" src="../images/ic443_co_rgb.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../sources/ic443/ic443_co_rgb.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Jae-Joon Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>

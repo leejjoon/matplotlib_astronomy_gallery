@@ -7,13 +7,25 @@ import pywcsgrid2
 import mpl_toolkits.axes_grid.colorbar
 from mpl_toolkits.axes_grid.axes_divider import make_axes_locatable
 
-f_radio = pyfits.open("ic443.cont.clean_gull.immerge.nan.fits")
 
-fig = plt.figure(1)
-ax = pywcsgrid2.subplot(111, header=f_radio[0].header)
+def setup_axes():
+    ax = pywcsgrid2.subplot(111, header=f_radio[0].header)
+
+    # add colorbar axes
+    divider = make_axes_locatable(ax)
+    cax = divider.new_horizontal("5%", pad=0.1, axes_class=Axes)
+    fig.add_axes(cax)
+
+    return ax, cax
+
+f_radio = pyfits.open("ic443.cont.clean_gull.immerge.nan.fits")
 
 # Jy -> mJy
 data = f_radio[0].data*1000
+
+# prepare figure & axes
+fig = plt.figure(1)
+ax, cax = setup_axes()
 
 # draw image
 im = ax.imshow(data, cmap=plt.cm.gray_r, origin="lower", interpolation="nearest")
@@ -25,10 +37,6 @@ cont = ax.contour(data, [20, 40, 60, 80, 100],
 for col in cont.collections:
     col.set_linewidth(0.5)
 
-# add colorbar axes
-axes_divider = make_axes_locatable(ax)
-cax = axes_divider.new_horizontal("5%", pad=0.1, axes_class=Axes)
-fig.add_axes(cax)
 cbar = mpl_toolkits.axes_grid.colorbar.colorbar(im, cax=cax)
 
 # adjust cbar ticks and and add levels for contour lines
@@ -42,6 +50,7 @@ ax.set_xlabel("Right Ascension (J2000)")
 ax.set_ylabel("Declination (J2000)")
 
 plt.show()
+
 if 0:
     ax.set_rasterization_zorder(2.1)
     cax.set_rasterization_zorder(2.1)
