@@ -1,6 +1,9 @@
 import pywcsgrid2
 import pyfits
-import pywcsgrid2.axes_grid.axislines as axislines
+try:
+    import pywcsgrid2.axes_grid.axislines as axislines
+except ImportError:
+    import mpl_toolkits.axes_grid.axislines as axislines
 import matplotlib.pyplot as plt
 
 class Velo(object):

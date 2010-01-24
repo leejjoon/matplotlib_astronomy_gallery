@@ -4,9 +4,13 @@ from matplotlib.axes import Axes
 import pyfits
 import pywcsgrid2
 
-import pywcsgrid2.axes_grid.colorbar as colorbar
-from pywcsgrid2.axes_grid.axes_divider import make_axes_locatable
-
+try:
+    import pywcsgrid2.axes_grid.colorbar as colorbar
+    from pywcsgrid2.axes_grid.axes_divider import make_axes_locatable
+except ImportError:
+    import mpl_toolkits.axes_grid.colorbar as colorbar
+    from mpl_toolkits.axes_grid.axes_divider import make_axes_locatable
+    
 
 def setup_axes():
     ax = pywcsgrid2.subplot(111, header=f_radio[0].header)

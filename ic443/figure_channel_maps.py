@@ -1,6 +1,12 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
-import mpl_toolkits.axes_grid as axes_grid
+try:
+    import pywcsgrid2.axes_grid as axes_grid
+    from pywcsgrid2.axes_grid import inset_locator
+except ImportError:
+    import mpl_toolkits.axes_grid as axes_grid
+    from mpl_toolkits.axes_grid import inset_locator
+    
 import pyfits
 
 class Velo(object):
@@ -37,7 +43,7 @@ g = axes_grid.ImageGrid(fig, 111,
                         share_all=True, aspect=True,
                         label_mode='L', cbar_mode=None,
                         cbar_location='right', cbar_pad=None,
-                        cbar_size='5%', cbar_set_cax=True,
+                        cbar_size='5%',
                         axes_class=(pywcsgrid2.Axes, dict(grid_helper=gh)))
 
 # draw images
@@ -58,21 +64,26 @@ for i, ax in enumerate(g):
 
 
 # label with velocities
-from matplotlib.patheffects import withStroke
+use_path_effect = True
+try:
+    from matplotlib.patheffects import withStroke
+except ImportError:
+    use_path_effect = False
+    
 for i, ax in enumerate(g):
     channel_number = start_channel + i
     v = vel.to_vel(channel_number) / 1.e3
     t = ax.add_inner_title(r"$v=%4.1f$ km s$^{-1}$" % (v), loc=2, frameon=False)
-    t.txt._text.set_path_effects([withStroke(foreground="w",
-                                             linewidth=3)])
+    if use_path_effect:
+        t.txt._text.set_path_effects([withStroke(foreground="w",
+                                                 linewidth=3)])
 
 
 # make colorbar
-from mpl_toolkits.axes_grid.inset_locator import inset_axes
-axins = inset_axes(ax,
-              width="8%", # width = 10% of parent_bbox width
-              height="100%", # height : 50%
-              loc=3)
+axins = inset_locator.inset_axes(ax,
+                                 width="8%", # width = 10% of parent_bbox width
+                                 height="100%", # height : 50%
+                                 loc=3)
 locator=axins.get_axes_locator()
 locator.set_bbox_to_anchor((1.01, 0, 1, 1), ax.transAxes)
 locator.borderpad = 0.

@@ -2,6 +2,13 @@ import pyfits
 import numpy as np
 import matplotlib.pyplot as plt
 
+import pywcsgrid2
+try:
+    from pywcsgrid2.axes_grid.axes_rgb import imshow_rgb
+except ImportError:
+    from mpl_toolkits.axes_grid.axes_rgb import imshow_rgb
+
+
 # prepare dara
 
 f = pyfits.open("ic443_co.ambient.fits")
@@ -20,9 +27,6 @@ def mytrim(d, vmin, vmax):
 
 
 # draw figure
-
-import pywcsgrid2
-from mpl_toolkits.axes_grid.axes_rgb import imshow_rgb
 
 ax = pywcsgrid2.subplot(111, header=f[0].header)
 i = imshow_rgb(ax,

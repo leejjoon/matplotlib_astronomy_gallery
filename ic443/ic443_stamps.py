@@ -1,7 +1,13 @@
 import jjpy.cube as cube
 import pyfits
 import pywcs
-import mpl_toolkits.axes_grid as axes_grid
+try:
+    import pywcsgrid2.axes_grid as axes_grid
+    from pywcsgrid2.axes_grid import anchored_artists
+except ImportError:
+    import mpl_toolkits.axes_grid as axes_grid
+    from mpl_toolkits.axes_grid import anchored_artists
+
 import matplotlib.pyplot as plt
 
 def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
@@ -33,7 +39,8 @@ def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
                        loc=4,
                        axes_class=axislines.Axes)
 
-    axins.axis["right","bottom","top"].toggle(all=False)
+    for d in ["right","bottom","top"]:
+        axins.axis[d].toggle(all=False)
     axins.axis["left"].toggle(all=True)
     axins.axis["left"].label.set_size(10)
 
@@ -125,8 +132,10 @@ if 1:
 
     # add labels
     from itertools import count, izip
-    from mpl_toolkits.axes_grid import anchored_artists
-    from matplotlib.patheffects import withStroke
+    try:
+        from matplotlib.patheffects import withStroke
+    except ImportError:
+        withStroke = None
 
     for i, ax, pc in izip(count(1), grid, peak_channel_list):
         v = cube.ax.imz2skyz(pc)/1000.
@@ -134,8 +143,9 @@ if 1:
                                             loc=2,
                                             frameon=False,
                                             prop=dict(size=12))
-        txt.txt._text.set_path_effects([withStroke(foreground="w",
-                                                   linewidth=3)])
+        if withStroke:
+            txt.txt._text.set_path_effects([withStroke(foreground="w",
+                                                       linewidth=3)])
         ax.add_artist(txt)
 
 

@@ -1,6 +1,11 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
-import pywcsgrid2.axes_grid as axes_grid
+try:
+    import pywcsgrid2.axes_grid as axes_grid
+    from pywcsgrid2.axes_grid.inset_locator import inset_axes
+except ImportError:
+    import mpl_toolkits.axes_grid as axes_grid
+    from mpl_toolkits.axes_grid.inset_locator import inset_axes
 import pyfits
 
 class Velo(object):
@@ -29,11 +34,10 @@ def setup_axes(fig, header):
                             share_all=True, aspect=True,
                             label_mode='L', cbar_mode=None,
                             cbar_location='right', cbar_pad=None,
-                            cbar_size='5%', cbar_set_cax=True,
+                            cbar_size='5%', 
                             axes_class=(pywcsgrid2.Axes, dict(grid_helper=gh)))
 
     # make colorbar
-    from mpl_toolkits.axes_grid.inset_locator import inset_axes
     ax = g[-1]
     cax = inset_axes(ax,
                      width="8%", # width = 10% of parent_bbox width
@@ -88,16 +92,8 @@ for i, ax in enumerate(g):
 
 
 # make colorbar
-from pywcsgrid2.axes_grid.inset_locator import inset_axes
-axins = inset_axes(ax,
-              width="8%", # width = 10% of parent_bbox width
-              height="100%", # height : 50%
-              loc=3)
-locator=axins.get_axes_locator()
-locator.set_bbox_to_anchor((1.01, 0, 1, 1), ax.transAxes)
-locator.borderpad = 0.
-axes_grid.colorbar.colorbar(im, cax=axins)
-axins.set_ylabel("T [K]")
+axes_grid.colorbar.colorbar(im, cax=cax)
+cax.set_ylabel("T [K]")
 
 # adjust norm
 norm.vmin = -0.1
@@ -105,7 +101,7 @@ norm.vmax = 3.5
 for im in images:
     im.changed()
 
-plt.show()
+#plt.show()
 
 if 0:
     plt.savefig("co_channel_maps.eps", dpi=70, bbox_inches="tight")
