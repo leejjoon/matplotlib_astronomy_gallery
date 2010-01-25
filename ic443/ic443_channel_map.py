@@ -1,11 +1,9 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
-try:
-    import pywcsgrid2.axes_grid as axes_grid
-    from pywcsgrid2.axes_grid.inset_locator import inset_axes
-except ImportError:
-    import mpl_toolkits.axes_grid as axes_grid
-    from mpl_toolkits.axes_grid.inset_locator import inset_axes
+
+import pywcsgrid2.axes_grid as axes_grid
+from pywcsgrid2.axes_grid.inset_locator import inset_axes
+
 import pyfits
 
 class Velo(object):
@@ -34,7 +32,7 @@ def setup_axes(fig, header):
                             share_all=True, aspect=True,
                             label_mode='L', cbar_mode=None,
                             cbar_location='right', cbar_pad=None,
-                            cbar_size='5%', 
+                            cbar_size='5%',
                             axes_class=(pywcsgrid2.Axes, dict(grid_helper=gh)))
 
     # make colorbar

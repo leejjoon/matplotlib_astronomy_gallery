@@ -3,10 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import pywcsgrid2
-try:
-    from pywcsgrid2.axes_grid.axes_rgb import imshow_rgb
-except ImportError:
-    from mpl_toolkits.axes_grid.axes_rgb import imshow_rgb
+
+from pywcsgrid2.axes_grid.axes_rgb import imshow_rgb
 
 
 # prepare dara
@@ -20,7 +18,7 @@ b = c.squash(-5.1e3, -7e3, coord="sky", mode="sum")
 
 f_radio = pyfits.open("ic443.cont.clean_gull.immerge.nan.fits")
 data = f_radio[0].data*1000
-    
+
 def mytrim(d, vmin, vmax):
     dd = (d + vmin) /(vmin + vmax)
     return np.clip(dd, 0, 1)
@@ -38,7 +36,7 @@ i = imshow_rgb(ax,
 
 ax.axis[:].major_ticks.set_color("w")
 
-    
+
 cont = ax[f_radio[0].header].contour(data, [10, 20, 40, 60, 80],
                                      colors="w", alpha=0.5)
 

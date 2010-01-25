@@ -1,18 +1,15 @@
 import jjpy.cube as cube
 import pyfits
 import pywcs
-try:
-    import pywcsgrid2.axes_grid as axes_grid
-    from pywcsgrid2.axes_grid import anchored_artists
-except ImportError:
-    import mpl_toolkits.axes_grid as axes_grid
-    from mpl_toolkits.axes_grid import anchored_artists
+
+import pywcsgrid2.axes_grid as axes_grid
+from pywcsgrid2.axes_grid import anchored_artists
 
 import matplotlib.pyplot as plt
 
 def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
     from mpl_toolkits.axes_grid.parasite_axes import HostAxes, ParasiteAxesAuxTrans
-    
+
     grid = axes_grid.AxesGrid(fig, "111",
                               nrows_ncols=(4, 3), #ngrids=11,
                               direction='row', axes_pad=0.02,
@@ -34,8 +31,8 @@ def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
     from mpl_toolkits.axes_grid.inset_locator import inset_axes
     import mpl_toolkits.axes_grid.axislines as axislines
     axins = inset_axes(grid[0],
-                       width="5%", 
-                       height="50%", 
+                       width="5%",
+                       height="50%",
                        loc=4,
                        axes_class=axislines.Axes)
 
@@ -60,7 +57,7 @@ def determine_xy_peak_channel(cube, wcs):
         s = cube.data[:,round(y),round(x)]
         peak_channel = s.argmax()
         peak_channel_list.append(peak_channel)
-        
+
     return imxs, imys, peak_channel_list
 
 
@@ -78,14 +75,14 @@ if 1:
     fig = plt.figure(1, figsize=(7., 10))
 
     grid, axins = setup_axes(fig, imx_c, imy_c, cdelt_arcmin)
-    
+
     def get_translated_coord(i, x, y):
         return (x - imx_c[i])*cdelt_arcmin, (y - imy_c[i])*cdelt_arcmin
-    
+
     mynorm=plt.Normalize()
 
     ny, nx = cube.data.shape[-2:]
-    
+
     for i, ax in enumerate(grid):
         imx, imy, pc = imx_c[i], imy_c[i], peak_channel_list[i]
         chan = cube.channel(pc)
@@ -107,7 +104,7 @@ if 1:
     if 1: # mark maser
         """ VLA C-array :  12\arcsec
         06 17 29.3  +22 22 43
-        06 18 03.7  +22 24 53  
+        06 18 03.7  +22 24 53
         """
         import coords
         p_list = [coords.Position("06:17:29.3  +22:22:43").j2000(),
