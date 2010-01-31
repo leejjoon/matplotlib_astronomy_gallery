@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
 
-import pywcsgrid2.axes_grid as axes_grid
+import pywcsgrid2.axes_grid.axes_grid as axes_grid
+from pywcsgrid2.axes_grid.colorbar import colorbar
 from pywcsgrid2.axes_grid.inset_locator import inset_axes
 
 import pyfits
@@ -90,7 +91,7 @@ for i, ax in enumerate(g):
 
 
 # make colorbar
-axes_grid.colorbar.colorbar(im, cax=cax)
+colorbar(im, cax=cax)
 cax.set_ylabel("T [K]")
 
 # adjust norm

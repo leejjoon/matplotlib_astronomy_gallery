@@ -147,7 +147,8 @@ if 1:
 
 
     if 1: # colorbar
-        axes_grid.colorbar.colorbar(grid[0].images[0], cax = axins)
+        from pywcsgrid2.axes_grid.colorbar import colorbar
+        colorbar(grid[0].images[0], cax = axins)
         axins.set_yticks([0, 2, 4])
         axins.set_ylabel("T$^*$ [K]")
 
