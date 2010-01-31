@@ -3,17 +3,22 @@ import pyfits
 
 #from mpl_toolkits.axes_grid.floating_axes import FloatingSubplot
 
-from mpl_toolkits.axes_grid.grid_finder import FixedLocator
-from mpl_toolkits.axes_grid.floating_axes import floatingaxes_class_factory
+from pywcsgrid2.axes_grid.grid_finder import FixedLocator
+from pywcsgrid2.axes_grid.floating_axes import floatingaxes_class_factory
 
-from mpl_toolkits.axes_grid.angle_helper import LocatorDMS, LocatorHMS, \
+from pywcsgrid2.axes_grid.angle_helper import LocatorDMS, LocatorHMS, \
      FormatterHMS, FormatterDMS
 
 from pywcsgrid2.axes_wcs import GridHelperWcsFloating, AxesWcs
 
 import matplotlib.axes as maxes
 
-import matplotlib.patheffects
+use_path_effects = True
+try:
+    import matplotlib.patheffects
+except ImportError:
+    use_path_effects = False
+
 
 
 def allsky_header():
@@ -115,9 +120,10 @@ if 1:
     axis = ax.axis["b=0"]
     axis.get_helper().set_extremes(-180, 180)
 
-    ef = matplotlib.patheffects.withStroke(foreground="w", linewidth=3)
-    axis.major_ticklabels.set_path_effects([ef])
-    axis.label.set_path_effects([ef])
+    if use_path_effects:
+        ef = matplotlib.patheffects.withStroke(foreground="w", linewidth=3)
+        axis.major_ticklabels.set_path_effects([ef])
+        axis.label.set_path_effects([ef])
 
     ax.grid()
     plt.show()

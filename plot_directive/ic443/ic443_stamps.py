@@ -1,12 +1,15 @@
 import jjpy.cube as cube
 import pyfits
 import pywcs
-import mpl_toolkits.axes_grid as axes_grid
+
+import pywcsgrid2.axes_grid as axes_grid
+from pywcsgrid2.axes_grid import anchored_artists
+
 import matplotlib.pyplot as plt
 
 def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
     from mpl_toolkits.axes_grid.parasite_axes import HostAxes, ParasiteAxesAuxTrans
-    
+
     grid = axes_grid.AxesGrid(fig, "111",
                               nrows_ncols=(4, 3), #ngrids=11,
                               direction='row', axes_pad=0.02,
@@ -28,12 +31,13 @@ def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
     from mpl_toolkits.axes_grid.inset_locator import inset_axes
     import mpl_toolkits.axes_grid.axislines as axislines
     axins = inset_axes(grid[0],
-                       width="5%", 
-                       height="50%", 
+                       width="5%",
+                       height="50%",
                        loc=4,
                        axes_class=axislines.Axes)
 
-    axins.axis["right","bottom","top"].toggle(all=False)
+    for d in ["right","bottom","top"]:
+        axins.axis[d].toggle(all=False)
     axins.axis["left"].toggle(all=True)
     axins.axis["left"].label.set_size(10)
 
@@ -53,7 +57,7 @@ def determine_xy_peak_channel(cube, wcs):
         s = cube.data[:,round(y),round(x)]
         peak_channel = s.argmax()
         peak_channel_list.append(peak_channel)
-        
+
     return imxs, imys, peak_channel_list
 
 
@@ -71,14 +75,14 @@ if 1:
     fig = plt.figure(1, figsize=(7., 10))
 
     grid, axins = setup_axes(fig, imx_c, imy_c, cdelt_arcmin)
-    
+
     def get_translated_coord(i, x, y):
         return (x - imx_c[i])*cdelt_arcmin, (y - imy_c[i])*cdelt_arcmin
-    
+
     mynorm=plt.Normalize()
 
     ny, nx = cube.data.shape[-2:]
-    
+
     for i, ax in enumerate(grid):
         imx, imy, pc = imx_c[i], imy_c[i], peak_channel_list[i]
         chan = cube.channel(pc)
@@ -100,7 +104,7 @@ if 1:
     if 1: # mark maser
         """ VLA C-array :  12\arcsec
         06 17 29.3  +22 22 43
-        06 18 03.7  +22 24 53  
+        06 18 03.7  +22 24 53
         """
         import coords
         p_list = [coords.Position("06:17:29.3  +22:22:43").j2000(),
@@ -125,8 +129,10 @@ if 1:
 
     # add labels
     from itertools import count, izip
-    from mpl_toolkits.axes_grid import anchored_artists
-    from matplotlib.patheffects import withStroke
+    try:
+        from matplotlib.patheffects import withStroke
+    except ImportError:
+        withStroke = None
 
     for i, ax, pc in izip(count(1), grid, peak_channel_list):
         v = cube.ax.imz2skyz(pc)/1000.
@@ -134,13 +140,15 @@ if 1:
                                             loc=2,
                                             frameon=False,
                                             prop=dict(size=12))
-        txt.txt._text.set_path_effects([withStroke(foreground="w",
-                                                   linewidth=3)])
+        if withStroke:
+            txt.txt._text.set_path_effects([withStroke(foreground="w",
+                                                       linewidth=3)])
         ax.add_artist(txt)
 
 
     if 1: # colorbar
-        axes_grid.colorbar.colorbar(grid[0].images[0], cax = axins)
+        from pywcsgrid2.axes_grid.colorbar import colorbar
+        colorbar(grid[0].images[0], cax = axins)
         axins.set_yticks([0, 2, 4])
         axins.set_ylabel("T$^*$ [K]")
 

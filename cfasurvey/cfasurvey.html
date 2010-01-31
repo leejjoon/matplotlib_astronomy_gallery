@@ -49,11 +49,11 @@
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">matplotlib.transforms</span> <span class="kn">import</span> <span class="n">Affine2D</span>
 
-<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid.floating_axes</span> <span class="kn">import</span> <span class="n">FloatingSubplot</span><span class="p">,</span>\
+<span class="kn">from</span> <span class="nn">pywcsgrid2.axes_grid.floating_axes</span> <span class="kn">import</span> <span class="n">FloatingSubplot</span><span class="p">,</span>\
      <span class="n">GridHelperCurveLinear</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span>  <span class="nn">mpl_toolkits.axes_grid.angle_helper</span> <span class="kn">as</span> <span class="nn">angle_helper</span>
+<span class="kn">import</span>  <span class="nn">pywcsgrid2.axes_grid.angle_helper</span> <span class="kn">as</span> <span class="nn">angle_helper</span>
 <span class="kn">from</span> <span class="nn">matplotlib.projections</span> <span class="kn">import</span> <span class="n">PolarAxes</span>
 
 <span class="k">def</span> <span class="nf">setup_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">):</span>
@@ -157,7 +157,7 @@
     <span class="k">return</span> <span class="n">alphas</span><span class="p">,</span> <span class="n">czs</span>
 
 <span class="k">if</span> <span class="mf">1</span><span class="p">:</span>
-    
+
     <span class="n">alphas</span><span class="p">,</span> <span class="n">czs</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
 
     <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>

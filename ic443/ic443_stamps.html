@@ -49,12 +49,15 @@ coordinate.</li>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">jjpy.cube</span> <span class="kn">as</span> <span class="nn">cube</span>
 <span class="kn">import</span> <span class="nn">pyfits</span>
 <span class="kn">import</span> <span class="nn">pywcs</span>
-<span class="kn">import</span> <span class="nn">mpl_toolkits.axes_grid</span> <span class="kn">as</span> <span class="nn">axes_grid</span>
+
+<span class="kn">import</span> <span class="nn">pywcsgrid2.axes_grid</span> <span class="kn">as</span> <span class="nn">axes_grid</span>
+<span class="kn">from</span> <span class="nn">pywcsgrid2.axes_grid</span> <span class="kn">import</span> <span class="n">anchored_artists</span>
+
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
 <span class="k">def</span> <span class="nf">setup_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">imx_c</span><span class="p">,</span> <span class="n">imy_c</span><span class="p">,</span> <span class="n">cdelt_arcmin</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid.parasite_axes</span> <span class="kn">import</span> <span class="n">HostAxes</span><span class="p">,</span> <span class="n">ParasiteAxesAuxTrans</span>
-    
+
     <span class="n">grid</span> <span class="o">=</span> <span class="n">axes_grid</span><span class="o">.</span><span class="n">AxesGrid</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s">&quot;111&quot;</span><span class="p">,</span>
                               <span class="n">nrows_ncols</span><span class="o">=</span><span class="p">(</span><span class="mf">4</span><span class="p">,</span> <span class="mf">3</span><span class="p">),</span> <span class="c">#ngrids=11,</span>
                               <span class="n">direction</span><span class="o">=</span><span class="s">&#39;row&#39;</span><span class="p">,</span> <span class="n">axes_pad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
@@ -76,12 +79,13 @@ coordinate.</li>
     <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid.inset_locator</span> <span class="kn">import</span> <span class="n">inset_axes</span>
     <span class="kn">import</span> <span class="nn">mpl_toolkits.axes_grid.axislines</span> <span class="kn">as</span> <span class="nn">axislines</span>
     <span class="n">axins</span> <span class="o">=</span> <span class="n">inset_axes</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mf">0</span><span class="p">],</span>
-                       <span class="n">width</span><span class="o">=</span><span class="s">&quot;5%&quot;</span><span class="p">,</span> 
-                       <span class="n">height</span><span class="o">=</span><span class="s">&quot;50%&quot;</span><span class="p">,</span> 
+                       <span class="n">width</span><span class="o">=</span><span class="s">&quot;5%&quot;</span><span class="p">,</span>
+                       <span class="n">height</span><span class="o">=</span><span class="s">&quot;50%&quot;</span><span class="p">,</span>
                        <span class="n">loc</span><span class="o">=</span><span class="mf">4</span><span class="p">,</span>
                        <span class="n">axes_class</span><span class="o">=</span><span class="n">axislines</span><span class="o">.</span><span class="n">Axes</span><span class="p">)</span>
 
-    <span class="n">axins</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;right&quot;</span><span class="p">,</span><span class="s">&quot;bottom&quot;</span><span class="p">,</span><span class="s">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="n">all</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;right&quot;</span><span class="p">,</span><span class="s">&quot;bottom&quot;</span><span class="p">,</span><span class="s">&quot;top&quot;</span><span class="p">]:</span>
+        <span class="n">axins</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="n">all</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
     <span class="n">axins</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="n">all</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">axins</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;left&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_size</span><span class="p">(</span><span class="mf">10</span><span class="p">)</span>
 
@@ -101,7 +105,7 @@ coordinate.</li>
         <span class="n">s</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="p">[:,</span><span class="nb">round</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="nb">round</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
         <span class="n">peak_channel</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
         <span class="n">peak_channel_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">peak_channel</span><span class="p">)</span>
-        
+
     <span class="k">return</span> <span class="n">imxs</span><span class="p">,</span> <span class="n">imys</span><span class="p">,</span> <span class="n">peak_channel_list</span>
 
 
@@ -119,14 +123,14 @@ coordinate.</li>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">10</span><span class="p">))</span>
 
     <span class="n">grid</span><span class="p">,</span> <span class="n">axins</span> <span class="o">=</span> <span class="n">setup_axes</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">imx_c</span><span class="p">,</span> <span class="n">imy_c</span><span class="p">,</span> <span class="n">cdelt_arcmin</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">get_translated_coord</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">imx_c</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">*</span><span class="n">cdelt_arcmin</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">imy_c</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">*</span><span class="n">cdelt_arcmin</span>
-    
+
     <span class="n">mynorm</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()</span>
 
     <span class="n">ny</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mf">2</span><span class="p">:]</span>
-    
+
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
         <span class="n">imx</span><span class="p">,</span> <span class="n">imy</span><span class="p">,</span> <span class="n">pc</span> <span class="o">=</span> <span class="n">imx_c</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">imy_c</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">peak_channel_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">chan</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">channel</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
@@ -148,7 +152,7 @@ coordinate.</li>
     <span class="k">if</span> <span class="mf">1</span><span class="p">:</span> <span class="c"># mark maser</span>
         <span class="sd">&quot;&quot;&quot; VLA C-array :  12\arcsec</span>
 <span class="sd">        06 17 29.3  +22 22 43</span>
-<span class="sd">        06 18 03.7  +22 24 53  </span>
+<span class="sd">        06 18 03.7  +22 24 53</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">coords</span>
         <span class="n">p_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">coords</span><span class="o">.</span><span class="n">Position</span><span class="p">(</span><span class="s">&quot;06:17:29.3  +22:22:43&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">j2000</span><span class="p">(),</span>
@@ -173,8 +177,10 @@ coordinate.</li>
 
     <span class="c"># add labels</span>
     <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">count</span><span class="p">,</span> <span class="n">izip</span>
-    <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid</span> <span class="kn">import</span> <span class="n">anchored_artists</span>
-    <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="kn">import</span> <span class="n">withStroke</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="kn">import</span> <span class="n">withStroke</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">withStroke</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pc</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">count</span><span class="p">(</span><span class="mf">1</span><span class="p">),</span> <span class="n">grid</span><span class="p">,</span> <span class="n">peak_channel_list</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">imz2skyz</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">/</span><span class="mf">1000.</span>
@@ -182,13 +188,15 @@ coordinate.</li>
                                             <span class="n">loc</span><span class="o">=</span><span class="mf">2</span><span class="p">,</span>
                                             <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                                             <span class="n">prop</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mf">12</span><span class="p">))</span>
-        <span class="n">txt</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">withStroke</span><span class="p">(</span><span class="n">foreground</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span>
-                                                   <span class="n">linewidth</span><span class="o">=</span><span class="mf">3</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="n">withStroke</span><span class="p">:</span>
+            <span class="n">txt</span><span class="o">.</span><span class="n">txt</span><span class="o">.</span><span class="n">_text</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">withStroke</span><span class="p">(</span><span class="n">foreground</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span>
+                                                       <span class="n">linewidth</span><span class="o">=</span><span class="mf">3</span><span class="p">)])</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
 
 
     <span class="k">if</span> <span class="mf">1</span><span class="p">:</span> <span class="c"># colorbar</span>
-        <span class="n">axes_grid</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mf">0</span><span class="p">],</span> <span class="n">cax</span> <span class="o">=</span> <span class="n">axins</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">pywcsgrid2.axes_grid.colorbar</span> <span class="kn">import</span> <span class="n">colorbar</span>
+        <span class="n">colorbar</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mf">0</span><span class="p">],</span> <span class="n">cax</span> <span class="o">=</span> <span class="n">axins</span><span class="p">)</span>
         <span class="n">axins</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mf">0</span><span class="p">,</span> <span class="mf">2</span><span class="p">,</span> <span class="mf">4</span><span class="p">])</span>
         <span class="n">axins</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;T$^*$ [K]&quot;</span><span class="p">)</span>
 

@@ -49,8 +49,8 @@
 <span class="kn">import</span> <span class="nn">pyfits</span>
 <span class="kn">import</span> <span class="nn">pywcsgrid2</span>
 
-<span class="kn">import</span> <span class="nn">mpl_toolkits.axes_grid.colorbar</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid.axes_divider</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="kn">import</span> <span class="nn">pywcsgrid2.axes_grid.colorbar</span> <span class="kn">as</span> <span class="nn">colorbar</span>
+<span class="kn">from</span> <span class="nn">pywcsgrid2.axes_grid.axes_divider</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
 
 
 <span class="k">def</span> <span class="nf">setup_axes</span><span class="p">():</span>
@@ -82,7 +82,7 @@
 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cont</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
     <span class="n">col</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
-<span class="n">cbar</span> <span class="o">=</span> <span class="n">mpl_toolkits</span><span class="o">.</span><span class="n">axes_grid</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">colorbar</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
 
 <span class="c"># adjust cbar ticks and and add levels for contour lines</span>
 <span class="n">cax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mf">0</span><span class="p">,</span> <span class="mf">20</span><span class="p">,</span> <span class="mf">40</span><span class="p">,</span> <span class="mf">60</span><span class="p">,</span> <span class="mf">80</span><span class="p">,</span> <span class="mf">100</span><span class="p">])</span>

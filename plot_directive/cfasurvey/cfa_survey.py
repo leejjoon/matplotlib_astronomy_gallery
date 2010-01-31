@@ -1,10 +1,10 @@
 from matplotlib.transforms import Affine2D
 
-from mpl_toolkits.axes_grid.floating_axes import FloatingSubplot,\
+from pywcsgrid2.axes_grid.floating_axes import FloatingSubplot,\
      GridHelperCurveLinear
 
 import numpy as np
-import  mpl_toolkits.axes_grid.angle_helper as angle_helper
+import  pywcsgrid2.axes_grid.angle_helper as angle_helper
 from matplotlib.projections import PolarAxes
 
 def setup_axes(fig):
@@ -108,7 +108,7 @@ def load_data():
     return alphas, czs
 
 if 1:
-    
+
     alphas, czs = load_data()
 
     import matplotlib.pyplot as plt

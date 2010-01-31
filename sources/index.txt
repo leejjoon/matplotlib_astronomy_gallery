@@ -17,6 +17,12 @@ JJ's Matplotlib Gallery For Astronomy
 .. image:: images/ic443_co_rgb.png
    :target: ic443/ic443_co_rgb.html
 
+* Tycho HST & KPNO
+
+.. image:: images/tycho_hst_kpno.png
+   :target: tycho/tycho_hst_kpno.html
+
+
 * IC443 CO Channel Map
 
 .. image:: images/ic443_channel_map.png

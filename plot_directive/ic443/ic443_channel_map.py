@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
-import mpl_toolkits.axes_grid as axes_grid
+
+import pywcsgrid2.axes_grid.axes_grid as axes_grid
+from pywcsgrid2.axes_grid.colorbar import colorbar
+from pywcsgrid2.axes_grid.inset_locator import inset_axes
+
 import pyfits
 
 class Velo(object):
@@ -17,7 +21,7 @@ class Velo(object):
 
 
 def setup_axes(fig, header):
-    
+
     gh = pywcsgrid2.GridHelper(wcs=header)
     gh.update_wcsgrid_params(label_density=(3,3))
 
@@ -29,11 +33,10 @@ def setup_axes(fig, header):
                             share_all=True, aspect=True,
                             label_mode='L', cbar_mode=None,
                             cbar_location='right', cbar_pad=None,
-                            cbar_size='5%', cbar_set_cax=True,
+                            cbar_size='5%',
                             axes_class=(pywcsgrid2.Axes, dict(grid_helper=gh)))
 
     # make colorbar
-    from mpl_toolkits.axes_grid.inset_locator import inset_axes
     ax = g[-1]
     cax = inset_axes(ax,
                      width="8%", # width = 10% of parent_bbox width
@@ -72,16 +75,23 @@ for i, ax in enumerate(g):
 
 
 # label with velocities
-from matplotlib.patheffects import withStroke
+use_path_effect = True
+try:
+    from matplotlib.patheffects import withStroke
+except ImportError:
+    use_path_effect = False
+
 for i, ax in enumerate(g):
     channel_number = start_channel + i
     v = vel.to_vel(channel_number) / 1.e3
     t = ax.add_inner_title(r"$v=%4.1f$ km s$^{-1}$" % (v), loc=2, frameon=False)
-    t.txt._text.set_path_effects([withStroke(foreground="w",
-                                             linewidth=3)])
+    if use_path_effect:
+        t.txt._text.set_path_effects([withStroke(foreground="w",
+                                                 linewidth=3)])
 
 
-axes_grid.colorbar.colorbar(im, cax=cax)
+# make colorbar
+colorbar(im, cax=cax)
 cax.set_ylabel("T [K]")
 
 # adjust norm
@@ -90,7 +100,7 @@ norm.vmax = 3.5
 for im in images:
     im.changed()
 
-plt.show()
+#plt.show()
 
 if 0:
     plt.savefig("co_channel_maps.eps", dpi=70, bbox_inches="tight")
