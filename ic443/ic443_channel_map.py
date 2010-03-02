@@ -100,7 +100,7 @@ norm.vmax = 3.5
 for im in images:
     im.changed()
 
-#plt.show()
+plt.show()
 
 if 0:
     plt.savefig("co_channel_maps.eps", dpi=70, bbox_inches="tight")
