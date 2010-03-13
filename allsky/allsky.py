@@ -1,12 +1,10 @@
 import matplotlib.pyplot as plt
 import pyfits
 
-#from mpl_toolkits.axes_grid.floating_axes import FloatingSubplot
+from mpl_toolkits.axisartist.grid_finder import FixedLocator
+from mpl_toolkits.axisartist.floating_axes import floatingaxes_class_factory
 
-from pywcsgrid2.axes_grid.grid_finder import FixedLocator
-from pywcsgrid2.axes_grid.floating_axes import floatingaxes_class_factory
-
-from pywcsgrid2.axes_grid.angle_helper import LocatorDMS, LocatorHMS, \
+from mpl_toolkits.axisartist.angle_helper import LocatorDMS, LocatorHMS, \
      FormatterHMS, FormatterDMS
 
 from pywcsgrid2.axes_wcs import GridHelperWcsFloating, AxesWcs

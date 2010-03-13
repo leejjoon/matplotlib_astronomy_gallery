@@ -4,8 +4,7 @@ from matplotlib.axes import Axes
 import pyfits
 import pywcsgrid2
 
-import pywcsgrid2.axes_grid.colorbar as colorbar
-from pywcsgrid2.axes_grid.axes_divider import make_axes_locatable
+from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 
 
 def setup_axes():
@@ -37,10 +36,10 @@ cont = ax.contour(data, [20, 40, 60, 80, 100],
 for col in cont.collections:
     col.set_linewidth(0.5)
 
-cbar = colorbar.colorbar(im, cax=cax)
+cbar = plt.colorbar(im, cax=cax)
 
 # adjust cbar ticks and and add levels for contour lines
-cax.set_yticks([0, 20, 40, 60, 80, 100])
+cbar.set_ticks([0, 20, 40, 60, 80, 100])
 cbar.add_lines(cont)
 
 cax.set_ylabel("mJy/Beam")

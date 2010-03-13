@@ -3,7 +3,6 @@ import pyregion
 import scipy.ndimage as ni
 import pywcsgrid2
 from mpl_toolkits.axes_grid import AxesGrid
-from matplotlib.patheffects import withStroke
 import matplotlib.pyplot as plt
 
 def load_rosat():
@@ -70,13 +69,19 @@ def annotate_w51c(ax, header):
 
 
     # annotate XN and XS
-    myeffect = withStroke(foreground="w", linewidth=3)
+    try:
+        from matplotlib.patheffects import withStroke
+    except ImportError:
+        kwargs=dict(color="w")
+    else:
+        myeffect = withStroke(foreground="w", linewidth=3)
+        kwargs = dict(path_effects=[myeffect])
     t1 = ax.annotate("XN", (592, 581), size=10,
                      ha="center", va="center",
-                     path_effects=[myeffect])
+                     **kwargs)
     t2 = ax.annotate("XS", (558, 511), size=10,
                      ha="center", va="center",
-                     path_effects=[myeffect])
+                     **kwargs)
     
 
 

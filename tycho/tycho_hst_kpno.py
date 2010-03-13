@@ -1,9 +1,8 @@
 import pyfits
 import pywcsgrid2
-from pywcsgrid2.axes_grid.colorbar import colorbar
 import matplotlib.pyplot as plt
 import matplotlib
-import pywcsgrid2.axes_grid.axislines as axislines
+import mpl_toolkits.axisartist as axisartist
 
 colormap = matplotlib.cm.gist_heat_r
 
@@ -12,7 +11,7 @@ def setup_axes01(fig, rect, axes_class=None, axes_kwargs=None):
     ax2 is an inset axes, but shares the x- and y-axis with ax1.
     """
 
-    from pywcsgrid2.axes_grid.axes_grid import ImageGrid
+    from mpl_toolkits.axes_grid1.axes_grid import ImageGrid
 
     grid = ImageGrid(fig, rect,
                      nrows_ncols=(1,2),
@@ -29,8 +28,8 @@ def setup_axes02(fig, rect, zoom=0.35, loc=4, axes_class=None, axes_kwargs=None)
     ax2 is an inset axes, but shares the x- and y-axis with ax1.
     """
 
-    from pywcsgrid2.axes_grid.axes_grid import ImageGrid
-    import pywcsgrid2.axes_grid.inset_locator as inset_locator
+    from mpl_toolkits.axes_grid1.axes_grid import ImageGrid, CbarAxes
+    import mpl_toolkits.axes_grid1.inset_locator as inset_locator
 
     grid = ImageGrid(fig, rect,
                      nrows_ncols=(1,1),
@@ -48,11 +47,13 @@ def setup_axes02(fig, rect, zoom=0.35, loc=4, axes_class=None, axes_kwargs=None)
                                           **kwargs
                                           )
 
+    
     cax = inset_locator.inset_axes(ax2, "100%", 0.05, loc=3,
                                    borderpad=0.,
                                    bbox_to_anchor=(0, 0, 1, 0),
                                    bbox_transform=ax2.transAxes,
-                                   axes_class=axislines.Axes,
+                                   axes_class=CbarAxes,
+                                   axes_kwargs=dict(orientation="top"),
                                    )
 
     ax2.cax = cax
@@ -60,7 +61,7 @@ def setup_axes02(fig, rect, zoom=0.35, loc=4, axes_class=None, axes_kwargs=None)
 
 
 def setup_inset_axes(parent_axes, f_hst, **kwargs):
-    import pywcsgrid2.axes_grid.inset_locator as inset_locator
+    import mpl_toolkits.axes_grid1.inset_locator as inset_locator
 
     if "zoom" not in kwargs:
         kwargs["zoom"] = 4
@@ -96,11 +97,9 @@ def imshow_hst(ax, cax, f_hst):
     im_hst.set_clim(0.0022, 0.0087)
 
     if cax:
-        #cax.colorbar(im_hst)
-        colorbar(im_hst, cax=cax, orientation="horizontal")
-        #cax.axis[:].toggle(all=False)
+        cax.colorbar(im_hst)
+        cax.axis[:].toggle(all=False)
         cax.axis["top"].toggle(ticks=True)
-        cax.set_xlabel(r"H$\alpha$ Intensity")
 
     return im_hst
 
@@ -111,10 +110,9 @@ def imshow_kpno(ax, cax, f_kpno):
                                )
     im_kpno.set_clim(39, 90)
     if cax:
-        colorbar(im_kpno, cax=cax, orientation="horizontal")
+        cax.colorbar(im_kpno)
         cax.axis[:].toggle(all=False)
         cax.axis["top"].toggle(ticks=True)
-        cax.set_xlabel(r"H$\alpha$ Intensity")
 
     return im_kpno
 
@@ -152,7 +150,7 @@ def draw_figure(fig, rect, setup_axes):
             ylim=(803,890))
 
     # adjust the location
-    from pywcsgrid2.axes_grid.inset_locator import mark_inset
+    from mpl_toolkits.axes_grid1.inset_locator import mark_inset
     p = mark_inset(ax1, ax3, loc1=1, loc2=3, alpha=0.5)
     p[0].set(fc="none")
 

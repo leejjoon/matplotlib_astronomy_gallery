@@ -2,13 +2,13 @@ import jjpy.cube as cube
 import pyfits
 import pywcs
 
-import pywcsgrid2.axes_grid as axes_grid
-from pywcsgrid2.axes_grid import anchored_artists
+import mpl_toolkits.axes_grid1 as axes_grid
+from mpl_toolkits.axes_grid1 import anchored_artists
 
 import matplotlib.pyplot as plt
 
 def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
-    from mpl_toolkits.axes_grid.parasite_axes import HostAxes, ParasiteAxesAuxTrans
+    from mpl_toolkits.axes_grid1.parasite_axes import HostAxes, ParasiteAxesAuxTrans
 
     grid = axes_grid.AxesGrid(fig, "111",
                               nrows_ncols=(4, 3), #ngrids=11,
@@ -29,15 +29,16 @@ def setup_axes(fig, imx_c, imy_c, cdelt_arcmin):
 
     # colorbar axes
     from mpl_toolkits.axes_grid.inset_locator import inset_axes
-    import mpl_toolkits.axes_grid.axislines as axislines
+    #import mpl_toolkits.axes_grid.axislines as axislines
     axins = inset_axes(grid[0],
                        width="5%",
                        height="50%",
                        loc=4,
-                       axes_class=axislines.Axes)
+                       )
+                       #axes_class=axislines.Axes)
 
-    for d in ["right","bottom","top"]:
-        axins.axis[d].toggle(all=False)
+    #for d in ["right","bottom","top"]:
+    axins.axis[:].toggle(all=False)
     axins.axis["left"].toggle(all=True)
     axins.axis["left"].label.set_size(10)
 
@@ -147,10 +148,11 @@ if 1:
 
 
     if 1: # colorbar
-        from pywcsgrid2.axes_grid.colorbar import colorbar
-        colorbar(grid[0].images[0], cax = axins)
-        axins.set_yticks([0, 2, 4])
-        axins.set_ylabel("T$^*$ [K]")
+        cb = plt.colorbar(grid[0].images[0], cax = axins)
+        cb.set_ticks([0, 2, 4])
+        axins.axis["right"].toggle(all=False)
+        axins.axis["left"].toggle(all=True)
+        cb.set_label("T$^*$ [K]")
 
 
     grid.axes_llc.set_xlabel(r"$\Delta$ R.A. [$^{\prime}$]")

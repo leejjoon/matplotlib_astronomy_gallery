@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import pywcsgrid2
 
-from pywcsgrid2.axes_grid.axes_rgb import imshow_rgb
+from mpl_toolkits.axes_grid1.axes_rgb import imshow_rgb
 
 
 # prepare dara

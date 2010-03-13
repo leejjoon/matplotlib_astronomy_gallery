@@ -1,10 +1,10 @@
 from matplotlib.transforms import Affine2D
 
-from pywcsgrid2.axes_grid.floating_axes import FloatingSubplot,\
+from mpl_toolkits.axisartist.floating_axes import FloatingSubplot,\
      GridHelperCurveLinear
 
 import numpy as np
-import  pywcsgrid2.axes_grid.angle_helper as angle_helper
+import  mpl_toolkits.axisartist.angle_helper as angle_helper
 from matplotlib.projections import PolarAxes
 
 def setup_axes(fig):
@@ -23,7 +23,7 @@ def setup_axes(fig):
     #from mpl_toolkits.axes_grid.grid_finder import FixedLocator
     #grid_locator2 = FixedLocator([0., 5000, 10000, 15000])
 
-    from mpl_toolkits.axes_grid.grid_finder import MaxNLocator
+    from mpl_toolkits.axisartist.grid_finder import MaxNLocator
     grid_locator2 = MaxNLocator(3)
 
     ra0, ra1 = 8.01*15, 16.99*15

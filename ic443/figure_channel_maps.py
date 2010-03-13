@@ -1,11 +1,7 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
-try:
-    import pywcsgrid2.axes_grid as axes_grid
-    from pywcsgrid2.axes_grid import inset_locator
-except ImportError:
-    import mpl_toolkits.axes_grid as axes_grid
-    from mpl_toolkits.axes_grid import inset_locator
+import mpl_toolkits.axes_grid1 as axes_grid
+from mpl_toolkits.axes_grid1 import inset_locator
     
 import pyfits
 
@@ -87,8 +83,8 @@ axins = inset_locator.inset_axes(ax,
 locator=axins.get_axes_locator()
 locator.set_bbox_to_anchor((1.01, 0, 1, 1), ax.transAxes)
 locator.borderpad = 0.
-axes_grid.colorbar.colorbar(im, cax=axins)
-axins.set_ylabel("T [K]")
+cb = plt.colorbar(im, cax=axins)
+cb.set_label("T [K]")
 
 # adjust norm
 norm.vmin = -0.1
