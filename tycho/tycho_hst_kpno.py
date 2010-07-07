@@ -3,6 +3,7 @@ import pywcsgrid2
 import matplotlib.pyplot as plt
 import matplotlib
 import mpl_toolkits.axisartist as axisartist
+from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
 colormap = matplotlib.cm.gist_heat_r
 
@@ -41,7 +42,7 @@ def setup_axes02(fig, rect, zoom=0.35, loc=4, axes_class=None, axes_kwargs=None)
     ax1 = grid[0]
     
     kwargs = dict(zoom=zoom, loc=loc)
-    ax2 = inset_locator.zoomed_inset_axes(ax1, 
+    ax2 = inset_locator.zoomed_inset_axes(ax1,
                                           axes_class=axes_class,
                                           axes_kwargs=axes_kwargs,
                                           **kwargs
@@ -117,15 +118,8 @@ def imshow_kpno(ax, cax, f_kpno):
     return im_kpno
 
 
-def draw_figure(fig, rect, setup_axes):
-    f_kpno = pyfits.open("tycho_kpno_2007_knotg.fits")
-    f_hst = pyfits.open("tycho_5_drz_sci2_knotg.fits")
-
-    gh = pywcsgrid2.GridHelper(wcs=f_hst[0].header)
-    axes_kwargs = dict(grid_helper=gh)
-
-    ax1, ax2 = setup_axes(fig, rect=rect,
-                          axes_class=pywcsgrid2.Axes, axes_kwargs=axes_kwargs)
+#def draw_figure(fig, rect, setup_axes):
+def draw_hst_kpno(ax1, ax2, ax3, f_hst, f_kpno):
 
     # draw data
 
@@ -142,17 +136,10 @@ def draw_figure(fig, rect, setup_axes):
     # add an inset
 
     
-    ax3 = setup_inset_axes(ax1, f_hst, zoom=4, loc=4)
-
     im_hst2 = imshow_hst(ax3, None, f_hst)
     im_hst2.set_clim(0.0028, 0.0187)
     ax3.set(xlim=(592,656+10),
             ylim=(803,890))
-
-    # adjust the location
-    from mpl_toolkits.axes_grid1.inset_locator import mark_inset
-    p = mark_inset(ax1, ax3, loc1=1, loc2=3, alpha=0.5)
-    p[0].set(fc="none")
 
     ax3.add_size_bar(1/3600./f_hst[0].header["cdelt2"],
                      r"$1^{\prime\prime}$", loc=3,
@@ -164,43 +151,38 @@ def draw_figure(fig, rect, setup_axes):
 
 if 1:
     
-    use_path_effect = True
-    try:
-        from matplotlib.patheffects import withStroke
-    except ImportError:
-        use_path_effect = False
+    f_kpno = pyfits.open("tycho_kpno_2007_knotg.fits")
+    f_hst = pyfits.open("tycho_5_drz_sci2_knotg.fits")
 
-    if use_path_effect:
-        def add_path_effect(txt):
-            txt.set_path_effects([withStroke(linewidth=3, foreground="w")])
-    else:
-        def add_path_effect(txt):
-            pass
-            
-    fig = plt.figure(1, figsize=(6, 8))
+    gh = pywcsgrid2.GridHelper(wcs=f_hst[0].header)
+    axes_kwargs = dict(grid_helper=gh)
 
     # first figure
-    ax1, ax2, ax3 = draw_figure(fig, 211, setup_axes01)
+    fig = plt.figure(1, figsize=(8, 5))
+    ax1, ax2 = setup_axes01(fig, rect=111,
+                            axes_class=pywcsgrid2.Axes, axes_kwargs=axes_kwargs)
+    ax3 = setup_inset_axes(ax1, f_hst, zoom=4, loc=4)
 
-    t1 = ax1.add_inner_title("(a) HST", 2, frameon=False)
-    add_path_effect(t1.txt._text)
+    # mark inset
+    p = mark_inset(ax1, ax3, loc1=1, loc2=3, alpha=0.5)
+    p[0].set(fc="none")
 
-    t2 = ax2.add_inner_title("(b) KPNO", 2, frameon=False)
-    add_path_effect(t2.txt._text)
+
+    draw_hst_kpno(ax1, ax2, ax3, f_hst, f_kpno)
+
+
 
     # second figure
-    ax1, ax2, ax3 = draw_figure(fig, 212, setup_axes02)
-    ax2.get_axes_locator().loc = 1
+    fig = plt.figure(2, figsize=(5, 6))
+    #fig = plt.figure(1, figsize=(8, 5))
+    ax1, ax2 = setup_axes02(fig, rect=111, loc=1,
+                            axes_class=pywcsgrid2.Axes, axes_kwargs=axes_kwargs)
+    ax3 = setup_inset_axes(ax1, f_hst, zoom=4, loc=4)
+
+
+    draw_hst_kpno(ax1, ax2, ax3, f_hst, f_kpno)
     ax2.axis[:].toggle(all=False)
     
-    t1 = ax1.add_inner_title("HST", 2, frameon=False)
-    add_path_effect(t1.txt._text)
-
-    t2 = ax2.add_inner_title("KPNO", 9, frameon=False,
-                             borderpad=0.,
-                             )
-    add_path_effect(t2.txt._text)
-
     plt.show()
 
 

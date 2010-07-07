@@ -33,7 +33,8 @@ def annotate_w51c(ax, header):
     ax.axis["b=0"] = ax["gal"].new_floating_axis(1, 0.)
     ax.axis["b=0"].toggle(all=False, ticks=False, label=True)
     ax.axis["b=0"].label.set_text(r"$b=0^{\circ}$")
-    ax.axis["b=0"].LABELPAD = 3
+    ax.axis["b=0"].label.set_pad(6)
+    #ax.axis["b=0"].LABELPAD = 3
 
 
 
@@ -101,19 +102,7 @@ if 1:
 
     header, rosat_im = load_rosat()
 
-
-    grid1 = AxesGrid(fig, rect=111,
-                     nrows_ncols=(1, 1), 
-                     axes_class=(pywcsgrid2.Axes, dict(header=header)),
-                     axes_pad=0.02, 
-                     label_mode='L',
-                     cbar_mode=None, cbar_location="right",
-                     cbar_pad=None, cbar_size='5%',
-                     ngrids=None, direction='row',
-                     add_all=True, share_all=True, 
-                     aspect=True)
-
-    ax = grid1[0]
+    ax = pywcsgrid2.subplot(111, header=header)
     im = ax.imshow(rosat_im, origin="lower", cmap=plt.cm.gray_r)
     im.set_clim(0.11, 0.7)
 

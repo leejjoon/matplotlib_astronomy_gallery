@@ -25,7 +25,7 @@ JJ's Matplotlib Gallery For Astronomy
 
 * Tycho HST & KPNO
 
-.. image:: images/tycho_hst_kpno.png
+.. image:: images/tycho_hst_kpno_00.png
    :target: tycho/tycho_hst_kpno.html
 
 
