@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>W51C X-ray and Radio &mdash; Matplotlib Gallery For Astronomy v0.1.1 documentation</title>
+    <link rel="stylesheet" href="../static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <link rel="top" title="Matplotlib Gallery For Astronomy v0.1.1 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="w51c-x-ray-and-radio">
+<h1>W51C X-ray and Radio<a class="headerlink" href="#w51c-x-ray-and-radio" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>requires the svn version of matplotlib( &gt; 0.99.1)</li>
+<li>data file currently not available</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyfits</span>
+<span class="kn">import</span> <span class="nn">pyregion</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="kn">as</span> <span class="nn">ni</span>
+<span class="kn">import</span> <span class="nn">pywcsgrid2</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid</span> <span class="kn">import</span> <span class="n">AxesGrid</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">load_rosat</span><span class="p">():</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;xselrosat_image.xsl&quot;</span><span class="p">)</span>
+    <span class="n">smoothed</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">),</span> <span class="mf">5</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="n">smoothed</span>
+
+<span class="k">def</span> <span class="nf">load_vla</span><span class="p">():</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;w51_vgps.fits&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+
+
+
+
+
+<span class="n">draw_contour</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">annotate_w51c</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">header</span><span class="p">):</span>
+    <span class="c"># draw + to mark center</span>
+    <span class="n">reg</span> <span class="o">=</span> <span class="n">pyregion</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;remnant_center.reg&quot;</span><span class="p">)</span>
+    <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">reg</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">coord_list</span><span class="p">[:</span><span class="mf">2</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">[</span><span class="s">&quot;fk5&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">cx</span><span class="p">],</span> <span class="p">[</span><span class="n">cy</span><span class="p">],</span> <span class="s">&quot;w+&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mf">9</span><span class="p">,</span> <span class="n">mew</span><span class="o">=</span><span class="mf">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mf">3</span><span class="p">)</span>
+
+    <span class="c"># draw b=0 line</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="s">&quot;gal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">new_floating_axis</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="n">all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">r&quot;$b=0^{\circ}$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_pad</span><span class="p">(</span><span class="mf">6</span><span class="p">)</span>
+    <span class="c">#ax.axis[&quot;b=0&quot;].LABELPAD = 3</span>
+
+
+
+    <span class="c"># draw XMM Mos region</span>
+    <span class="n">reg</span> <span class="o">=</span> <span class="n">pyregion</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;mos_fov.reg&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">as_imagecoord</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    <span class="n">patches</span><span class="p">,</span> <span class="n">txts</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">get_mpl_patches_texts</span><span class="p">()</span>
+    <span class="n">circ</span> <span class="o">=</span> <span class="n">patches</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span>
+    <span class="n">circ</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ec</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circ</span><span class="p">)</span>
+
+
+    <span class="c"># Mark W51C, W51A, W51B</span>
+    <span class="n">ann1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;W51C&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">481</span><span class="p">,</span> <span class="mf">415</span><span class="p">),</span>
+                       <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">25</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&quot;offset points&quot;</span><span class="p">,</span>
+                       <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;top&quot;</span><span class="p">,</span>
+                       <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;.5&quot;</span><span class="p">,</span>
+                                       <span class="n">relpos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+                       <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s">&quot;round&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;none&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">))</span>
+
+    <span class="n">ann1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;W51B&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">732</span><span class="p">,</span> <span class="mf">428</span><span class="p">),</span>
+                       <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mf">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">25</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&quot;offset points&quot;</span><span class="p">,</span>
+                       <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;top&quot;</span><span class="p">,</span>
+                       <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;.5&quot;</span><span class="p">,</span>
+                                       <span class="n">relpos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+                       <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s">&quot;round&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;none&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">))</span>
+
+    <span class="n">ann1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;W51A&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">501</span><span class="p">,</span> <span class="mf">691</span><span class="p">),</span>
+                       <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">20</span><span class="p">,</span> <span class="o">-</span><span class="mf">15</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&quot;offset points&quot;</span><span class="p">,</span>
+                       <span class="n">ha</span><span class="o">=</span><span class="s">&quot;right&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;top&quot;</span><span class="p">,</span>
+                       <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;.5&quot;</span><span class="p">,</span>
+                                       <span class="n">relpos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+                       <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s">&quot;round&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;none&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">))</span>
+
+
+    <span class="c"># annotate XN and XS</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="kn">import</span> <span class="n">withStroke</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">myeffect</span> <span class="o">=</span> <span class="n">withStroke</span><span class="p">(</span><span class="n">foreground</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">3</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">path_effects</span><span class="o">=</span><span class="p">[</span><span class="n">myeffect</span><span class="p">])</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;XN&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">592</span><span class="p">,</span> <span class="mf">581</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mf">10</span><span class="p">,</span>
+                     <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;XS&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">558</span><span class="p">,</span> <span class="mf">511</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mf">10</span><span class="p">,</span>
+                     <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+                     <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+
+
+<span class="k">def</span> <span class="nf">draw_radio_contour</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
+    <span class="n">vla_header</span><span class="p">,</span> <span class="n">vla_im</span> <span class="o">=</span> <span class="n">load_vla</span><span class="p">()</span>
+    <span class="n">cont</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">vla_header</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">vla_im</span><span class="p">,</span>
+                                  <span class="p">[</span><span class="mf">40</span><span class="p">,</span> <span class="mf">60</span><span class="p">,</span> <span class="mf">80</span><span class="p">,</span> <span class="mf">100</span><span class="p">,</span> <span class="mf">150</span><span class="p">,</span> <span class="mf">200</span><span class="p">,</span>
+                                   <span class="mf">300</span><span class="p">,</span> <span class="mf">500</span><span class="p">,</span> <span class="mf">1000</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">cl</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&quot;0.4&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">cl</span> <span class="ow">in</span> <span class="n">cont</span><span class="o">.</span><span class="n">collections</span><span class="p">]</span>
+
+    
+    
+<span class="k">if</span> <span class="mf">1</span><span class="p">:</span>
+    
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mf">1</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+
+    <span class="n">header</span><span class="p">,</span> <span class="n">rosat_im</span> <span class="o">=</span> <span class="n">load_rosat</span><span class="p">()</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">pywcsgrid2</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mf">111</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rosat_im</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">)</span>
+    <span class="n">im</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+
+
+    <span class="n">annotate_w51c</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">header</span><span class="p">)</span>
+
+    <span class="n">draw_radio_contour</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">363</span><span class="p">,</span> <span class="mf">827</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">349</span><span class="p">,</span> <span class="mf">761</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="mf">0</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&quot;w51_rosat.eps&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s">&quot;tight&quot;</span><span class="p">)</span>
+
+    <span class="c">## (b)</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/w51c/w51c_rosat.py">source code</a>, <a class="reference external" href="../plot_directive/w51c/w51c_rosat.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/w51c/w51c_rosat.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../images/w51c_rosat.png" src="../images/w51c_rosat.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/w51c/w51c_rosat.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2009, Jae-Joon Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0b2.
+    </div>
+  </body>
+</html>

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,12 +14,13 @@
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
         VERSION:     '0.1.1',
-        COLLAPSE_MODINDEX: false,
+        COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <link rel="top" title="Matplotlib Gallery For Astronomy v0.1.1 documentation" href="../index.html" /> 
   </head>
@@ -50,12 +53,10 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pyfits</span>
 
-<span class="c">#from mpl_toolkits.axes_grid.floating_axes import FloatingSubplot</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axisartist.grid_finder</span> <span class="kn">import</span> <span class="n">FixedLocator</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axisartist.floating_axes</span> <span class="kn">import</span> <span class="n">floatingaxes_class_factory</span>
 
-<span class="kn">from</span> <span class="nn">pywcsgrid2.axes_grid.grid_finder</span> <span class="kn">import</span> <span class="n">FixedLocator</span>
-<span class="kn">from</span> <span class="nn">pywcsgrid2.axes_grid.floating_axes</span> <span class="kn">import</span> <span class="n">floatingaxes_class_factory</span>
-
-<span class="kn">from</span> <span class="nn">pywcsgrid2.axes_grid.angle_helper</span> <span class="kn">import</span> <span class="n">LocatorDMS</span><span class="p">,</span> <span class="n">LocatorHMS</span><span class="p">,</span> \
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axisartist.angle_helper</span> <span class="kn">import</span> <span class="n">LocatorDMS</span><span class="p">,</span> <span class="n">LocatorHMS</span><span class="p">,</span> \
      <span class="n">FormatterHMS</span><span class="p">,</span> <span class="n">FormatterDMS</span>
 
 <span class="kn">from</span> <span class="nn">pywcsgrid2.axes_wcs</span> <span class="kn">import</span> <span class="n">GridHelperWcsFloating</span><span class="p">,</span> <span class="n">AxesWcs</span>
@@ -190,24 +191,24 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="../sources/allsky/allsky.txt"
-                     rel="nofollow">Show Source</a></li>
-            </ul>
-          <div id="searchbox" style="display: none">
-            <h3>Quick search</h3>
-              <form class="search" action="../search.html" method="get">
-                <input type="text" name="q" size="18" />
-                <input type="submit" value="Go" />
-                <input type="hidden" name="check_keywords" value="yes" />
-                <input type="hidden" name="area" value="default" />
-              </form>
-              <p class="searchtip" style="font-size: 90%">
-              Enter search terms or a module, class or function name.
-              </p>
-          </div>
-          <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../sources/allsky/allsky.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -222,8 +223,8 @@
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2009, Jae-Joon Lee.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+        &copy; Copyright 2009, Jae-Joon Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0b2.
     </div>
   </body>
 </html>

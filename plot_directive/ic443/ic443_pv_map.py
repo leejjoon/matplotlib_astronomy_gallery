@@ -1,7 +1,7 @@
 import pywcsgrid2
 import pyfits
 
-import pywcsgrid2.axes_grid.axislines as axislines
+import mpl_toolkits.axisartist as axisartist
 
 import matplotlib.pyplot as plt
 
@@ -25,11 +25,11 @@ def setup_axes(fig, header):
     divider = make_axes_locatable(ax0)
 
     ax_v = divider.new_vertical(1.5, pad=0.1, sharex=ax0,
-                                axes_class=axislines.Axes)
+                                axes_class=axisartist.Axes)
     fig.add_axes(ax_v)
 
     ax_h = divider.new_horizontal(1.5, pad=0.1, sharey=ax0,
-                                  axes_class=axislines.Axes)
+                                  axes_class=axisartist.Axes)
 
     fig.add_axes(ax_h)
 

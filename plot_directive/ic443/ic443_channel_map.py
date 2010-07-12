@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
 
-import pywcsgrid2.axes_grid.axes_grid as axes_grid
-from pywcsgrid2.axes_grid.colorbar import colorbar
-from pywcsgrid2.axes_grid.inset_locator import inset_axes
+import mpl_toolkits.axes_grid1.axes_grid as axes_grid
+#from mpl_toolkits.axes_grid.colorbar import colorbar
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 import pyfits
 
@@ -91,8 +91,8 @@ for i, ax in enumerate(g):
 
 
 # make colorbar
-colorbar(im, cax=cax)
-cax.set_ylabel("T [K]")
+cb = plt.colorbar(im, cax=cax)
+cb.set_label("T [K]")
 
 # adjust norm
 norm.vmin = -0.1
@@ -100,7 +100,7 @@ norm.vmax = 3.5
 for im in images:
     im.changed()
 
-#plt.show()
+plt.show()
 
 if 0:
     plt.savefig("co_channel_maps.eps", dpi=70, bbox_inches="tight")
