@@ -82,15 +82,11 @@ norm.vmax=5**2
 for ax in [ax0, ax_h, ax_v]:
     ax.images[0].changed()
 
-from matplotlib.transforms import Affine2D
 gh1 = ax_v.get_grid_helper()
-gh1.grid_finder.grid_locator2._nbins=4
-#gh1.grid_finder.grid_locator2._factor=0.001
-gh1.update_grid_finder(Affine2D().scale(1, 1000)+gh1._wcs_trans)
+gh1.set_ticklabel2_type("absval", scale=0.001, nbins=5)
+
 gh2 = ax_h.get_grid_helper()
-gh2.grid_finder.grid_locator1._nbins=4
-#gh2.grid_finder.grid_locator1._factor=0.001
-gh2.update_grid_finder(Affine2D().scale(1000, 1)+gh2._wcs_trans)
+gh2.set_ticklabel1_type("absval", scale=0.001, nbins=5)
 
 plt.show()
 
