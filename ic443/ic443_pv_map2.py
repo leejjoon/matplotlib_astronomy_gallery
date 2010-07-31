@@ -21,20 +21,11 @@ def setup_axes(fig, header):
     ax_h = divider.new_horizontal(1.5, pad=0.1, sharey=ax0,
                                 axes_class=pywcsgrid2.Axes,
                                 grid_helper=gh2)
-    #axes_class=axisartist.Axes)
 
     fig.add_axes(ax_h)
 
 
-    # new_axis = ax0.get_grid_helper().new_fixed_axis
-    # ax_h.axis["left"] = new_axis("left", axes=ax_h)
-    # ax_h.axis["right"] = new_axis("right", axes=ax_h)
     ax_h.axis["left"].toggle(label=False, ticklabels=False)
-    # ax_h.axis["right"].toggle(ticklabels=False)
-
-    # ax_v.axis["top"] = new_axis("top", axes=ax_v)
-    # ax_v.axis["bottom"] = new_axis("bottom", axes=ax_v)
-    # ax_v.axis["top"].toggle(ticklabels=False)
     ax_v.axis["bottom"].toggle(label=False, ticklabels=False)
 
 
@@ -51,7 +42,7 @@ cmap = plt.cm.gray_r
 
 fits_cube[0].data = fits_cube[0].data**2
 
-vv0  = fits_cube[0].data.max(axis=0) #.sum(axis=1)
+vv0  = fits_cube[0].data.max(axis=0)
 vv1  = fits_cube[0].data.max(axis=1)
 vv2  = fits_cube[0].data.max(axis=2).transpose()
 
@@ -70,9 +61,6 @@ ax_h.imshow(vv2, origin="lower", aspect="auto",
             interpolation="nearest", norm=norm,
             cmap=cmap)
 
-ax_h.axis["bottom"].label.set_text(r"$v_{\mathrm{LSR}}$ [km s$^{-1}$]")
-ax_v.axis["left"].label.set_text(r"$v_{\mathrm{LSR}}$ [km s$^{-1}$]")
-
 ax0.grid(True)
 ax_h.grid(True)
 ax_v.grid(True)
@@ -87,6 +75,10 @@ gh1.set_ticklabel2_type("absval", scale=0.001, nbins=5)
 
 gh2 = ax_h.get_grid_helper()
 gh2.set_ticklabel1_type("absval", scale=0.001, nbins=5)
+
+ax_h.axis["bottom"].label.set_text(r"$v_{\mathrm{LSR}}$ [km s$^{-1}$]")
+ax_v.axis["left"].label.set_text(r"$v_{\mathrm{LSR}}$ [km s$^{-1}$]")
+
 
 plt.show()
 

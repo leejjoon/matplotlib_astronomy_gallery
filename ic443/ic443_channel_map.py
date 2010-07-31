@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pywcsgrid2
+import pywcs
 
 import mpl_toolkits.axes_grid1.axes_grid as axes_grid
 #from mpl_toolkits.axes_grid.colorbar import colorbar
@@ -9,21 +10,18 @@ import pyfits
 
 class Velo(object):
     def __init__(self, header):
-        self.crpix = header["CRPIX3"]
-        self.crval = header["CRVAL3"]
-        self.cdelt = header["CDELT3"]
-
-    def to_pixel(self, v):
-        return (v - self.crval)/self.cdelt + self.crpix + 1
+        wcs = pywcs.WCS(header)
+        self.wcs_vel = wcs.sub([3])
 
     def to_vel(self, p):
-        return (p - self.crpix - 1)*self.cdelt + self.crval
+        v = self.wcs_vel.wcs_pix2sky([[p]], 0)
+        return v[0][0]
 
 
 def setup_axes(fig, header):
 
     gh = pywcsgrid2.GridHelper(wcs=header)
-    gh.update_wcsgrid_params(label_density=(3,3))
+    gh.locator_params(nbins=3)
 
     g = axes_grid.ImageGrid(fig, 111,
                             nrows_ncols=(5, 4),
@@ -32,8 +30,6 @@ def setup_axes(fig, header):
                             axes_pad=0.02, add_all=True,
                             share_all=True, aspect=True,
                             label_mode='L', cbar_mode=None,
-                            cbar_location='right', cbar_pad=None,
-                            cbar_size='5%',
                             axes_class=(pywcsgrid2.Axes, dict(grid_helper=gh)))
 
     # make colorbar
@@ -41,10 +37,11 @@ def setup_axes(fig, header):
     cax = inset_axes(ax,
                      width="8%", # width = 10% of parent_bbox width
                      height="100%", # height : 50%
-                     loc=3)
-    locator=cax.get_axes_locator()
-    locator.set_bbox_to_anchor((1.01, 0, 1, 1), ax.transAxes)
-    locator.borderpad = 0.
+                     loc=3,
+                     bbox_to_anchor=(1.01, 0, 1, 1),
+                     bbox_transform=ax.transAxes,
+                     borderpad=0.
+                     )
 
     return g, cax
 
@@ -93,6 +90,7 @@ for i, ax in enumerate(g):
 # make colorbar
 cb = plt.colorbar(im, cax=cax)
 cb.set_label("T [K]")
+cb.set_ticks([0, 1, 2, 3])
 
 # adjust norm
 norm.vmin = -0.1
