@@ -11,13 +11,13 @@ def setup_axes(fig, header):
     ax0 = pywcsgrid2.subplot(111, wcs=header)
     divider = make_axes_locatable(ax0)
 
-    gh1 = pywcsgrid2.GridHelper(wcs=header, axis_nums=[0, 2])
+    gh1 = pywcsgrid2.GridHelperSimple(wcs=header, axis_nums=[0, 2])
     ax_v = divider.new_vertical(1.5, pad=0.1, sharex=ax0,
                                 axes_class=pywcsgrid2.Axes,
                                 grid_helper=gh1)
     fig.add_axes(ax_v)
 
-    gh2 = pywcsgrid2.GridHelper(wcs=header, axis_nums=[2, 1])
+    gh2 = pywcsgrid2.GridHelperSimple(wcs=header, axis_nums=[2, 1])
     ax_h = divider.new_horizontal(1.5, pad=0.1, sharey=ax0,
                                 axes_class=pywcsgrid2.Axes,
                                 grid_helper=gh2)
@@ -29,13 +29,13 @@ def setup_axes(fig, header):
     # new_axis = ax0.get_grid_helper().new_fixed_axis
     # ax_h.axis["left"] = new_axis("left", axes=ax_h)
     # ax_h.axis["right"] = new_axis("right", axes=ax_h)
-    ax_h.axis["left"].toggle(ticklabels=False)
-    ax_h.axis["right"].toggle(ticklabels=False)
+    ax_h.axis["left"].toggle(label=False, ticklabels=False)
+    # ax_h.axis["right"].toggle(ticklabels=False)
 
     # ax_v.axis["top"] = new_axis("top", axes=ax_v)
     # ax_v.axis["bottom"] = new_axis("bottom", axes=ax_v)
-    ax_v.axis["top"].toggle(ticklabels=False)
-    ax_v.axis["bottom"].toggle(ticklabels=False)
+    # ax_v.axis["top"].toggle(ticklabels=False)
+    ax_v.axis["bottom"].toggle(label=False, ticklabels=False)
 
 
     return ax0, ax_v, ax_h
