@@ -46,7 +46,8 @@ start_channel = i*nxy+dxy
 for i, ax in enumerate(g):
     channel_number = start_channel + i
     channel = fits_cube[0].data[channel_number]
-    im = ax.imshow(channel, origin="lower", norm=norm, cmap=cmap)
+    im = ax.imshow(channel, origin="lower", interpolation="nearest",
+                   norm=norm, cmap=cmap)
     images.append(im)
 
 
