@@ -16,16 +16,10 @@ def setup_axes(fig, imx_c, imy_c, h):
                           add_all=True,
                           share_all=False, #False,
                           share_x=False, share_y=False,
-                          label_mode='1',
+                          label_mode='L',
                           axes_class=(pywcsgrid2.Axes, {"header":h}))
     grid.set_aspect(True)
-    
-    for ax, imx, imy in zip(grid, imx_c, imy_c):
-        #ax.set_label_type("delta", "delta",
-        #                  offset_center=(imx, imy))
-        gh = ax.get_grid_helper()
-        gh.set_ticklabel_type("delta", "delta",
-                              center_pixel=(imx, imy))
+
 
 
     # colorbar axes
@@ -43,22 +37,6 @@ def setup_axes(fig, imx_c, imy_c, h):
     return grid, axins
 
 
-def determine_xy_peak_channel(cube, wcs):
-    import pyfits
-    data = pyfits.open("sc_fit.fits")[1].data
-    ra_list = data.field("ra")
-    dec_list = data.field("dec")
-
-    imxs, imys = wcs.wcs_sky2pix(ra_list, dec_list, 0)
-
-    peak_channel_list = []
-    for x, y in zip(imxs, imys):
-        s = cube.data[:,round(y),round(x)]
-        peak_channel = s.argmax()
-        peak_channel_list.append(peak_channel)
-
-    return imxs, imys, peak_channel_list
-
 
 
 if 1:
@@ -67,7 +45,14 @@ if 1:
     wcs = pywcs.WCS(c[0].header).sub([1, 2])
     cube = cube.Cube(c[0].data, c[0].header)
 
-    imx_c, imy_c, peak_channel_list = determine_xy_peak_channel(cube, wcs)
+    imx_c = [ 212.,  162.,  148.,  152., 93.,   57.  ,   57.,   48.,
+              5.,   75. ,   75.,  114.]
+
+    imy_c = [ 202.,  168.,  132.,   78., 78.,   98.,  126.,  133.,
+              163.,  148.,  155.,  234.]
+
+    peak_channel_list = [79, 97, 92, 91, 91, 98, 83, 85, 93, 87, 90, 89]
+
     cdelt_arcmin = abs(c[0].header["cdelt1"])*60.
 
 
@@ -75,8 +60,8 @@ if 1:
 
     grid, axins = setup_axes(fig, imx_c, imy_c, c[0].header)
 
-    def get_translated_coord(i, x, y):
-        return (x - imx_c[i])*cdelt_arcmin, (y - imy_c[i])*cdelt_arcmin
+#     def get_translated_coord(i, x, y):
+#         return (x - imx_c[i])*cdelt_arcmin, (y - imy_c[i])*cdelt_arcmin
 
     mynorm=plt.Normalize()
 
@@ -120,11 +105,12 @@ if 1:
     dx_arcmin, dy_arcmin = 3.9, 3.9 # 4'
     dx_pixel = dx_arcmin/cdelt_arcmin
     dy_pixel = dy_arcmin/cdelt_arcmin
-    
-    for i, ax in enumerate(grid):
-        imx, imy, pc = imx_c[i], imy_c[i], peak_channel_list[i]
+
+    for ax, imx, imy in zip(grid, imx_c, imy_c):
         ax.set_xlim(imx-dx_pixel, imx+dx_pixel)
         ax.set_ylim(imy-dy_pixel, imy+dy_pixel)
+        ax.set_ticklabel_type("delta")
+        #ax.set_ticklabel_type("arcmin", locs=[-2,  0,  2])
 
     mynorm.vmin=-0.3
     mynorm.vmax=5
@@ -158,8 +144,6 @@ if 1:
 
     #grid.axes_llc.set_xlabel(r"$\Delta$ R.A. [$^{\prime}$]")
     #grid.axes_llc.set_ylabel(r"$\Delta$ Dec. [$^{\prime}$]")
-    grid.axes_llc.set_xlabel(r"$\Delta$ R.A.")
-    grid.axes_llc.set_ylabel(r"$\Delta$ Dec.")
 
 
     # annotate plot SC 7

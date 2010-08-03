@@ -40,7 +40,7 @@ def setup_axes02(fig, rect, zoom=0.35, loc=4, axes_class=None, axes_kwargs=None)
                      axes_class=(axes_class, axes_kwargs))
 
     ax1 = grid[0]
-    
+
     kwargs = dict(zoom=zoom, loc=loc)
     ax2 = inset_locator.zoomed_inset_axes(ax1,
                                           axes_class=axes_class,
@@ -48,7 +48,7 @@ def setup_axes02(fig, rect, zoom=0.35, loc=4, axes_class=None, axes_kwargs=None)
                                           **kwargs
                                           )
 
-    
+
     cax = inset_locator.inset_axes(ax2, "100%", 0.05, loc=3,
                                    borderpad=0.,
                                    bbox_to_anchor=(0, 0, 1, 0),
@@ -73,10 +73,8 @@ def setup_inset_axes(parent_axes, f_hst, **kwargs):
 
     axes_class = pywcsgrid2.Axes
     axes_kwargs=dict(grid_helper=gh3)
-    
-    ax3 = inset_locator.zoomed_inset_axes(parent_axes, 
-                                          #bbox_to_anchor=None,
-                                          #bbox_transform=None,
+
+    ax3 = inset_locator.zoomed_inset_axes(parent_axes,
                                           axes_class=axes_class,
                                           axes_kwargs=axes_kwargs,
                                           **kwargs
@@ -98,9 +96,10 @@ def imshow_hst(ax, cax, f_hst):
     im_hst.set_clim(0.0022, 0.0087)
 
     if cax:
-        cax.colorbar(im_hst)
+        cbar = cax.colorbar(im_hst)
         cax.axis[:].toggle(all=False)
         cax.axis["top"].toggle(ticks=True)
+        cax.cbar = cbar
 
     return im_hst
 
@@ -111,10 +110,10 @@ def imshow_kpno(ax, cax, f_kpno):
                                )
     im_kpno.set_clim(39, 90)
     if cax:
-        cax.colorbar(im_kpno)
+        cbar = cax.colorbar(im_kpno)
         cax.axis[:].toggle(all=False)
         cax.axis["top"].toggle(ticks=True)
-
+        cax.cbar = cbar
     return im_kpno
 
 
@@ -135,7 +134,7 @@ def draw_hst_kpno(ax1, ax2, ax3, f_hst, f_kpno):
     ax2.set_ylim(47.5, 1422.5)
     # add an inset
 
-    
+
     im_hst2 = imshow_hst(ax3, None, f_hst)
     im_hst2.set_clim(0.0028, 0.0187)
     ax3.set(xlim=(592,656+10),
@@ -150,7 +149,7 @@ def draw_hst_kpno(ax1, ax2, ax3, f_hst, f_kpno):
     return ax1, ax2, ax3
 
 if 1:
-    
+
     f_kpno = pyfits.open("tycho_kpno_2007_knotg.fits")
     f_hst = pyfits.open("tycho_5_drz_sci2_knotg.fits")
 
@@ -182,7 +181,7 @@ if 1:
 
     draw_hst_kpno(ax1, ax2, ax3, f_hst, f_kpno)
     ax2.axis[:].toggle(all=False)
-    
+
     plt.show()
 
 

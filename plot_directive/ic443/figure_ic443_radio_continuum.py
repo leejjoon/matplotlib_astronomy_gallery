@@ -45,6 +45,7 @@ cbar.add_lines(cont)
 cax.set_ylabel("mJy/Beam")
 
 ax.set(xlim=(75, 437), ylim=(65, 428))
+
 ax.set_xlabel("Right Ascension (J2000)")
 ax.set_ylabel("Declination (J2000)")
 
