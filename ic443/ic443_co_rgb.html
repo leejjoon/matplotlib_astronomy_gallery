@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -14,13 +12,12 @@
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
         VERSION:     '0.1.1',
-        COLLAPSE_INDEX: false,
+        COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="../static/jquery.js"></script>
-    <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <link rel="top" title="Matplotlib Gallery For Astronomy v0.1.1 documentation" href="../index.html" /> 
   </head>
@@ -59,33 +56,33 @@
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;ic443_co.ambient.fits&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">jjpy.cube</span> <span class="kn">as</span> <span class="nn">cube</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">Cube</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">Cube</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">squash</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5e3</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.4e3</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s">&quot;sky&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;sum&quot;</span><span class="p">)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">squash</span><span class="p">(</span><span class="o">-</span><span class="mf">3.4e3</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.1e3</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s">&quot;sky&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;sum&quot;</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">squash</span><span class="p">(</span><span class="o">-</span><span class="mf">5.1e3</span><span class="p">,</span> <span class="o">-</span><span class="mf">7e3</span><span class="p">,</span> <span class="n">coord</span><span class="o">=</span><span class="s">&quot;sky&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&quot;sum&quot;</span><span class="p">)</span>
 
 <span class="n">f_radio</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;ic443.cont.clean_gull.immerge.nan.fits&quot;</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">f_radio</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">*</span><span class="mf">1000</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">f_radio</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">*</span><span class="mi">1000</span>
 
 <span class="k">def</span> <span class="nf">mytrim</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">):</span>
     <span class="n">dd</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="n">vmin</span><span class="p">)</span> <span class="o">/</span><span class="p">(</span><span class="n">vmin</span> <span class="o">+</span> <span class="n">vmax</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 
 <span class="c"># draw figure</span>
 
-<span class="n">ax</span> <span class="o">=</span> <span class="n">pywcsgrid2</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mf">111</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pywcsgrid2</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 <span class="n">i</span> <span class="o">=</span> <span class="n">imshow_rgb</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span>
-               <span class="n">mytrim</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">7</span><span class="p">),</span>
-               <span class="n">mytrim</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">7</span><span class="p">),</span>
-               <span class="n">mytrim</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">7</span><span class="p">),</span>
+               <span class="n">mytrim</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+               <span class="n">mytrim</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+               <span class="n">mytrim</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
                <span class="n">origin</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&quot;nearest&quot;</span><span class="p">,</span>
                <span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[:]</span><span class="o">.</span><span class="n">major_ticks</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
 
 
-<span class="n">cont</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">f_radio</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="mf">10</span><span class="p">,</span> <span class="mf">20</span><span class="p">,</span> <span class="mf">40</span><span class="p">,</span> <span class="mf">60</span><span class="p">,</span> <span class="mf">80</span><span class="p">],</span>
+<span class="n">cont</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">f_radio</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">],</span>
                                      <span class="n">colors</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -103,24 +100,24 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../sources/ic443/ic443_co_rgb.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" size="18" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../sources/ic443/ic443_co_rgb.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -135,8 +132,8 @@
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2009, Jae-Joon Lee.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0b2.
+      &copy; Copyright 2009, Jae-Joon Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
     </div>
   </body>
 </html>
