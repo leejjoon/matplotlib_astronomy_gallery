@@ -45,6 +45,11 @@ JJ's Matplotlib Gallery For Astronomy
 .. image:: images/ic443_pv_map.png
    :target: ic443/ic443_pv_map.html
 
+* Ha and MIPS 24um of LBVs
+
+.. image:: images/fig_lbvs.png
+   :target: lbvs/fig_lbvs.html
+
 
 
 * CfA Survey
