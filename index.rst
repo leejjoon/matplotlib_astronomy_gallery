@@ -6,6 +6,8 @@
 JJ's Matplotlib Gallery For Astronomy
 =====================================
 
+Step-by-step tutorial for some of the figures are available at
+:ref:`tutorial-index`
 
 * IC443 Radio Continuum
 
