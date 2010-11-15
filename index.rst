@@ -64,6 +64,11 @@ Step-by-step tutorial for some of the figures are available at
 .. image:: images/allsky.png
    :target: allsky/allsky.html
 
+* Galactic plane in All Sky Maps
+
+.. image:: images/allsky_galactic_proj_05.png
+   :target: allsky/allsky_galactic_proj.html
+
 
 
 
