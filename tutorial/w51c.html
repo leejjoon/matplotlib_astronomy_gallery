@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>W51C X-ray and Radio &mdash; Matplotlib Gallery For Astronomy v0.1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Matplotlib Gallery For Astronomy v0.1.1 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="w51c-x-ray-and-radio">
+<h1>W51C X-ray and Radio<a class="headerlink" href="#w51c-x-ray-and-radio" title="Permalink to this headline">¶</a></h1>
+<p>Data preparation</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyfits</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="kn">as</span> <span class="nn">ni</span>
+
+<span class="n">f_X</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;w51c/xselrosat_image.xsl&quot;</span><span class="p">)</span>
+<span class="n">d_X</span> <span class="o">=</span> <span class="n">ni</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">f_X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">),</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">h_X</span> <span class="o">=</span> <span class="n">f_X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+
+<span class="n">f_R</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;w51c/w51_vgps.fits&quot;</span><span class="p">)</span>
+<span class="n">d_R</span><span class="p">,</span> <span class="n">h_R</span> <span class="o">=</span> <span class="n">f_R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f_R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+<p>We create an axes using pywcsgrid2. We use header information of the
+X-ray image.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pywcsgrid2</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pywcsgrid2</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">h_X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the data coordinate of the pywcsgrid2&#8217;s Axes is
+pixel coordinate of the given header. Thus we can show the image as.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">d_X</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">&quot;lower&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">)</span>
+<span class="n">im</span><span class="o">.</span><span class="n">set_clim</span><span class="p">(</span><span class="mf">0.11</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/dfde72b5ee.png" src="../_images/dfde72b5ee.png" />
+</div>
+<p>We now adjust the x- and y-lim. Remember, these are in pixel
+coordinate. And turn off auto adjustment of x- and y-lim.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">363</span><span class="p">,</span> <span class="mi">827</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">349</span><span class="p">,</span> <span class="mi">761</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_autoscale_on</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/bc37bd8faa.png" src="../_images/bc37bd8faa.png" />
+</div>
+<p>We mark a position with plot command. While the data coordinate of the
+axes is the pixel coordinate of the fits file, a parasite axes whose
+data coordinate is &#8220;fk5&#8221; can be created by indexing the axes with
+&#8220;fk5&#8221;, e.g., ax[&#8220;fk5&#8221;]. Similarly, ax[&#8220;fk4&#8221;] and ax[&#8220;gal&#8221;] are also
+available. Below, we use ax[&#8220;fk5&#8221;].plot command whose coordinate
+is interpreted as world coordinate in fk5 (in degree).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span><span class="p">[</span><span class="s">&quot;fk5&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">290.896</span><span class="p">],</span> <span class="p">[</span><span class="mf">14.1669</span><span class="p">],</span> <span class="s">&quot;w+&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">mew</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/7a4cfd5f15.png" src="../_images/7a4cfd5f15.png" />
+</div>
+<p>We put some annotations. We again use a parasite axes. Note also that
+we use patheffects.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># annotate XN and XS</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patheffects</span> <span class="kn">import</span> <span class="n">withStroke</span>
+<span class="n">myeffect</span> <span class="o">=</span> <span class="n">withStroke</span><span class="p">(</span><span class="n">foreground</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">path_effects</span><span class="o">=</span><span class="p">[</span><span class="n">myeffect</span><span class="p">])</span>
+
+<span class="n">t1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="s">&quot;fk5&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;XN&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">290.817</span><span class="p">,</span> <span class="mf">14.245</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="s">&quot;fk5&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;XS&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">290.890</span><span class="p">,</span> <span class="mf">14.099</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/44b86e1dab.png" src="../_images/44b86e1dab.png" />
+</div>
+<p>Now we draw contour lines of radio images. The radio fits has
+different wcs information than the X-ray one. We use pywcsgrid2&#8217;s
+parasite axes feature. If we index a pywcsgrid2&#8217;s axes with a pyfits
+header, it creates an parasite axes whose data coordinate is that of
+the pixel coordinate of the given header. In the example
+below, we index as &#8220;ax[h_R]&#8221;. This returns an axes whose data
+coordinate is that of the radio file(h_R).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cont</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="n">h_R</span><span class="p">]</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">d_R</span><span class="p">,</span>
+                      <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span>
+                       <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+<span class="p">[</span><span class="n">cl</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&quot;0.4&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">cl</span> <span class="ow">in</span> <span class="n">cont</span><span class="o">.</span><span class="n">collections</span><span class="p">]</span> <span class="c"># to change contour colors</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/a5cee21583.png" src="../_images/a5cee21583.png" />
+</div>
+<p>Put more annotations with arrow.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Mark W51C, W51A, W51B</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s">&quot;-&gt;&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;.5&quot;</span><span class="p">,</span>
+                              <span class="n">relpos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span>
+              <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">boxstyle</span><span class="o">=</span><span class="s">&quot;round&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;none&quot;</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">))</span>
+
+<span class="n">ann1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;W51C&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">481</span><span class="p">,</span> <span class="mi">415</span><span class="p">),</span>
+                   <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&quot;offset points&quot;</span><span class="p">,</span>
+                   <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;top&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="n">ann1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;W51B&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">732</span><span class="p">,</span> <span class="mi">428</span><span class="p">),</span>
+                   <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&quot;offset points&quot;</span><span class="p">,</span>
+                   <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;top&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="n">ann1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;W51A&quot;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mi">501</span><span class="p">,</span> <span class="mi">691</span><span class="p">),</span>
+                   <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">15</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&quot;offset points&quot;</span><span class="p">,</span>
+                   <span class="n">ha</span><span class="o">=</span><span class="s">&quot;right&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">&quot;top&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/a7bd6ff764.png" src="../_images/a7bd6ff764.png" />
+</div>
+<p>Using pyregion module, you can draw ds9 region files.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># draw XMM Mos region</span>
+<span class="kn">import</span> <span class="nn">pyregion</span>
+<span class="n">reg</span> <span class="o">=</span> <span class="n">pyregion</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;w51c/mos_fov.reg&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">as_imagecoord</span><span class="p">(</span><span class="n">h_X</span><span class="p">)</span>
+<span class="n">patches</span><span class="p">,</span> <span class="n">txts</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">get_mpl_patches_texts</span><span class="p">()</span>
+<span class="n">circ</span> <span class="o">=</span> <span class="n">patches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circ</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/7b84017736.png" src="../_images/7b84017736.png" />
+</div>
+<p>where the contents of &#8220;mos_fov.reg&#8221; is</p>
+<div class="highlight-python"><pre>fk5; circle(290.88372,14.130298,843.31194") # color=black dash=1</pre>
+</div>
+<p>As a last step, we show a line of &#8220;b=0&#8221;. We use floating axis feature.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="s">&quot;gal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">new_floating_axis</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/39fefdf89a.png" src="../_images/39fefdf89a.png" />
+</div>
+<p>This creates a floating axis in galactic coordinates whose second
+coordinate (first argument 1. Index starts from 0) has a value of 0.
+We disable ticks and ticklabels and set axis label.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">r&quot;$b=0^{\circ}$&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/2c6206f281.png" src="../_images/2c6206f281.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/tutorial/w51c.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Jae-Joon Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>

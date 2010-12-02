@@ -39,9 +39,6 @@ CRPIX1  =              2048.50 / Reference Pixel in X
 CRPIX2  =              1024.50 / Reference Pixel in Y
 CRVAL1  =        0.00000000000 / Galactic longitude of reference pixel
 CRVAL2  =        0.00000000000 / Galactic latitude of reference pixel
-LONPOLE =        0.00000000000 / Native longitude of Galactic pole
-LATPOLE =        0.00000000000 / Galactic latitude of native pole
-PV2_1   =        0.00000000000 /Projection parameter 1
 HISTORY PUTAST: Jun 17 14:36:35 2009 World Coordinate System parameters written
 """
     cards = pyfits.CardList()
@@ -64,7 +61,7 @@ if 1:
         header = f[1].header
     else:
         data = None
-        header = allsky_header()
+    header = allsky_header()
 
 
     fig = plt.figure(1, figsize=(8, 5))
@@ -80,12 +77,14 @@ if 1:
     tick_formatter2=FormatterDMS()
 
     grid_helper = GridHelperWcsFloating(wcs=header,
-                                        extremes=(-180, 180, -90, 90),
+                                        extremes=(180, -180, -90, 90),
                                         grid_locator1=grid_locator1,
                                         grid_locator2=grid_locator2,
                                         tick_formatter1=tick_formatter1,
                                         tick_formatter2=tick_formatter2,
                                         )
+
+    #grid_helper.set_lon_ref(-180)
 
     ax = FloatingSubplot(fig, 111, grid_helper=grid_helper)
     ax.set_autoscale_on(False)
@@ -96,13 +95,10 @@ if 1:
         im.set_clip_path(ax.patch)
         im.set_clim(0, 30)
 
-    #for an in ["bottom", "top"]:
     ax.axis["bottom", "top"].set_visible(False)
 
-    ax.axis["right"].set_axis_direction("left")
-
     axis = ax.axis["left"]
-    axis.set_axis_direction("right")
+    axis.set_axis_direction("left")
     axis.major_ticklabels._text_follow_ref_angle=False
     axis.major_ticklabels.set(rotation=0,
                               va="center", ha="center",
@@ -116,7 +112,9 @@ if 1:
                                                    axis_direction='bottom')
 
     axis = ax.axis["b=0"]
-    axis.get_helper().set_extremes(-180, 180)
+    axis.get_helper().set_extremes(180, -180)
+    axis.set_ticklabel_direction("-")
+    axis.set_axislabel_direction("-")
 
     if use_path_effects:
         ef = matplotlib.patheffects.withStroke(foreground="w", linewidth=3)

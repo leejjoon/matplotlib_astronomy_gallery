@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>All-Sky Plot : WHAM &mdash; Matplotlib Gallery For Astronomy v0.1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Matplotlib Gallery For Astronomy v0.1.1 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="all-sky-plot-wham">
+<h1>All-Sky Plot : WHAM<a class="headerlink" href="#all-sky-plot-wham" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>requires svn version of matplotlib or future release</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pyfits</span>
+
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axisartist.floating_axes</span> <span class="kn">import</span> <span class="n">floatingaxes_class_factory</span>
+
+<span class="kn">from</span> <span class="nn">pywcsgrid2.axes_wcs</span> <span class="kn">import</span> <span class="n">GridHelperWcsFloating</span><span class="p">,</span> <span class="n">AxesWcs</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.axes</span> <span class="kn">as</span> <span class="nn">maxes</span>
+
+<span class="n">use_path_effects</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.patheffects</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">use_path_effects</span> <span class="o">=</span> <span class="bp">False</span>
+
+
+
+<span class="k">def</span> <span class="nf">allsky_header</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+    <span class="c"># header retrieved from &quot;lambda_mollweide_halpha_fwhm06_0512.fits&quot;</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;XTENSION= &#39;IMAGE   &#39;           / IMAGE extension</span>
+<span class="s">BITPIX  =                  -32 / Number of bits per data pixel</span>
+<span class="s">NAXIS   =                    2 / Number of data axes</span>
+<span class="s">NAXIS1  =                 4096 /</span>
+<span class="s">NAXIS2  =                 2048 /</span>
+<span class="s">CTYPE1  = &#39;RA---</span><span class="si">%s</span><span class="s">&#39;           / Coordinate Type</span>
+<span class="s">CTYPE2  = &#39;DEC--</span><span class="si">%s</span><span class="s">&#39;           / Coordinate Type</span>
+<span class="s">EQUINOX =              2000.00 / Equinox of Ref. Coord.</span>
+<span class="s">CDELT1  =     -0.0791293637247 / Degrees / Pixel</span>
+<span class="s">CDELT2  =      0.0791293637247 / Degrees / Pixel</span>
+<span class="s">CROTA2  =              0.00000 / Rotation Angle (Degrees)</span>
+<span class="s">CRPIX1  =              2048.50 / Reference Pixel in X</span>
+<span class="s">CRPIX2  =              1024.50 / Reference Pixel in Y</span>
+<span class="s">CRVAL1  =      180.00000000000 / Galactic longitude of reference pixel</span>
+<span class="s">CRVAL2  =        0.00000000000 / Galactic latitude of reference pixel</span>
+<span class="s">LONPOLE =      180.00000000000 / Native longitude of Galactic pole</span>
+<span class="s">LATPOLE =       90.00000000000 / Galactic latitude of native pole</span>
+<span class="s">&quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="n">proj</span><span class="p">)</span>
+    <span class="n">cards</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">CardList</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">header</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">):</span>
+        <span class="n">card</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">Card</span><span class="p">()</span>
+        <span class="n">card</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">cards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">card</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">Header</span><span class="p">(</span><span class="n">cards</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">h</span>
+
+
+<span class="kn">import</span> <span class="nn">pywcsgrid2.wcs_helper</span> <span class="kn">as</span> <span class="nn">wcs_helper</span>
+
+<span class="n">FloatingAxes</span> <span class="o">=</span> <span class="n">floatingaxes_class_factory</span><span class="p">(</span><span class="n">AxesWcs</span><span class="p">)</span>
+<span class="n">FloatingSubplot</span> <span class="o">=</span> <span class="n">maxes</span><span class="o">.</span><span class="n">subplot_class_factory</span><span class="p">(</span><span class="n">FloatingAxes</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">do_allsky</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">,</span> <span class="n">pseudo_cyl</span><span class="p">):</span>
+
+    <span class="n">header</span> <span class="o">=</span> <span class="n">allsky_header</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
+
+    <span class="n">grid_helper</span> <span class="o">=</span> <span class="n">GridHelperWcsFloating</span><span class="p">(</span><span class="n">wcs</span><span class="o">=</span><span class="n">header</span><span class="p">,</span>
+                                        <span class="n">extremes</span><span class="o">=</span><span class="p">(</span><span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dec_max</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">),</span>
+                                        <span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">FloatingSubplot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">grid_helper</span><span class="o">=</span><span class="n">grid_helper</span><span class="p">)</span>
+    <span class="n">grid_helper</span><span class="o">.</span><span class="n">set_lon_ref</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">grid_helper</span><span class="o">.</span><span class="n">set_ticklabel1_type</span><span class="p">(</span><span class="s">&quot;hms&quot;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+    <span class="n">grid_helper</span><span class="o">.</span><span class="n">set_ticklabel2_type</span><span class="p">(</span><span class="s">&quot;dms&quot;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_autoscale_on</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pseudo_cyl</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;bottom&quot;</span><span class="p">,</span> <span class="s">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;left&quot;</span><span class="p">]</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">_text_follow_ref_angle</span><span class="o">=</span><span class="bp">False</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                              <span class="n">va</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+                              <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c">#axis.label._text_follow_ref_angle=False</span>
+        <span class="c">#axis.label.set(rotation=90, va=&quot;center&quot;, ha=&quot;right&quot;)</span>
+
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;d=0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_helper</span><span class="o">.</span><span class="n">new_floating_axis</span><span class="p">(</span><span class="n">nth_coord</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                                       <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                                       <span class="n">axis_direction</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">)</span>
+
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;d=0&quot;</span><span class="p">]</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">get_helper</span><span class="p">()</span><span class="o">.</span><span class="n">set_extremes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_ticklabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_axislabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">r&quot;$\alpha_{2000}$&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_ticklabel_direction</span><span class="p">(</span><span class="s">&quot;+&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;top&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_axislabel_direction</span><span class="p">(</span><span class="s">&quot;+&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_ticklabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_axislabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;bottom&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set_pad</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+
+
+    <span class="n">gh_gal</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="s">&quot;gal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get_grid_helper</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">361</span><span class="p">,</span> <span class="mi">30</span><span class="p">):</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">gh_gal</span><span class="o">.</span><span class="n">new_floating_axis</span><span class="p">(</span><span class="n">nth_coord</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">d</span><span class="p">,</span>
+                                        <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                        <span class="n">axis_direction</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span>
+                                        <span class="n">allsky</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;a=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">axis</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_ticklabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_axislabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">get_helper</span><span class="p">()</span><span class="o">.</span><span class="n">set_extremes</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">90</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">&quot;0.7&quot;</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mf">2.</span><span class="p">)</span>
+
+    <span class="n">gh_gal</span><span class="o">.</span><span class="n">locator_params</span><span class="p">(</span><span class="n">nbins</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">gh_gal</span><span class="o">.</span><span class="n">new_floating_axis</span><span class="p">(</span><span class="n">nth_coord</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                    <span class="n">axes</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+                                    <span class="n">axis_direction</span><span class="o">=</span><span class="s">&#39;bottom&#39;</span><span class="p">,</span>
+                                    <span class="n">allsky</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_ticklabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_axislabel_direction</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">set_zorder</span><span class="p">(</span><span class="mf">5.</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">toggle</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">ticklabels</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">line</span><span class="o">.</span><span class="n">set_linewidth</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">[</span><span class="s">&quot;b=0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">axis</span>
+
+    <span class="n">ef</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">patheffects</span><span class="o">.</span><span class="n">withStroke</span><span class="p">(</span><span class="n">foreground</span><span class="o">=</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">axis</span><span class="o">.</span><span class="n">major_ticklabels</span><span class="o">.</span><span class="n">set_path_effects</span><span class="p">([</span><span class="n">ef</span><span class="p">])</span>
+
+
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+    <span class="n">an1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="s">&quot;gal&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s">&quot;G.C.&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s">&quot;data&quot;</span><span class="p">,</span>
+                             <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">textcoords</span><span class="o">=</span><span class="s">&quot;offset points&quot;</span><span class="p">,</span>
+                             <span class="n">ha</span><span class="o">=</span><span class="s">&quot;left&quot;</span><span class="p">,</span>
+                             <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s">&quot;-&gt;&quot;</span><span class="p">),</span>
+                             <span class="n">bbox</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fc</span><span class="o">=</span><span class="s">&quot;0.5&quot;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s">&quot;none&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">))</span>
+
+
+    <span class="k">return</span> <span class="n">ax</span>
+
+
+
+<span class="n">proj_dec_max_pseudo_cyl_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;CYP&quot;</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+                                <span class="p">(</span><span class="s">&quot;CEA&quot;</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+                                <span class="p">(</span><span class="s">&quot;CAR&quot;</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+                                <span class="p">(</span><span class="s">&quot;MER&quot;</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+                                <span class="p">(</span><span class="s">&quot;SFL&quot;</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+                                <span class="p">(</span><span class="s">&quot;PAR&quot;</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span>
+                                <span class="p">(</span><span class="s">&quot;MOL&quot;</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+                                <span class="p">]</span>
+
+
+<span class="k">for</span> <span class="n">proj</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">,</span> <span class="n">pseudo_cyl</span> <span class="ow">in</span> <span class="n">proj_dec_max_pseudo_cyl_list</span><span class="p">:</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">do_allsky</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">,</span> <span class="n">pseudo_cyl</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;proj = </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">proj</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">))</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj.py">source code</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_00.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_00.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/allsky_galactic_proj_00.png" src="../_images/allsky_galactic_proj_00.png" />
+</div>
+<p>[<a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj.py">source code</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_01.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_01.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/allsky_galactic_proj_01.png" src="../_images/allsky_galactic_proj_01.png" />
+</div>
+<p>[<a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj.py">source code</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_02.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_02.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/allsky_galactic_proj_02.png" src="../_images/allsky_galactic_proj_02.png" />
+</div>
+<p>[<a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj.py">source code</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_03.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_03.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/allsky_galactic_proj_03.png" src="../_images/allsky_galactic_proj_03.png" />
+</div>
+<p>[<a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj.py">source code</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_04.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_04.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/allsky_galactic_proj_04.png" src="../_images/allsky_galactic_proj_04.png" />
+</div>
+<p>[<a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj.py">source code</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_05.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_05.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/allsky_galactic_proj_05.png" src="../_images/allsky_galactic_proj_05.png" />
+</div>
+<p>[<a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj.py">source code</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_06.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/allsky/allsky_galactic_proj_06.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/allsky_galactic_proj_06.png" src="../_images/allsky_galactic_proj_06.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="../_sources/allsky/allsky_galactic_proj.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="../search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Jae-Joon Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+    </div>
+  </body>
+</html>
