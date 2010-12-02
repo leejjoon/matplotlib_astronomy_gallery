@@ -347,9 +347,18 @@ def _plot_directive(plot_path, basedir, function_name, plot_code, caption,
         # remove for figure directive
         del options['nofigs']
 
+
     formats = setup.config.plot_formats
+
     if type(formats) == str:
         formats = eval(formats)
+
+    inline_only = options.has_key('inlineonly')
+    if inline_only:
+        # remove for figure directive
+        del options['inlineonly']
+        formats = formats[:1]
+
 
     fname = os.path.basename(plot_path)
     basename, ext = os.path.splitext(fname)
@@ -536,6 +545,7 @@ def setup(app):
                'include-source': directives.flag,
                'context': directives.flag,
                'nofigs': directives.flag,
+               'inlineonly': directives.flag,
                'encoding': directives.encoding }
 
     app.add_directive('plot', plot_directive, True, (0, 2, 0), **options)
