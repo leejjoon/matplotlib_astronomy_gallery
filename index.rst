@@ -11,62 +11,62 @@ Step-by-step tutorial for some of the figures are available at
 
 * IC443 Radio Continuum
 
-.. image:: images/figure_ic443_radio_continuum.png
+.. image:: _images/figure_ic443_radio_continuum.png
    :target: ic443/ic443.html
 
 * IC443 CO RGB Composite
 
-.. image:: images/ic443_co_rgb.png
+.. image:: _images/ic443_co_rgb.png
    :target: ic443/ic443_co_rgb.html
 
 * W51C Xray and Radio
 
-.. image:: images/w51c_rosat.png
+.. image:: _images/w51c_rosat.png
    :target: w51c/w51c_rosat.html
 
 
 * Tycho HST & KPNO
 
-.. image:: images/tycho_hst_kpno_00.png
+.. image:: _images/tycho_hst_kpno_00.png
    :target: tycho/tycho_hst_kpno.html
 
 
 * IC443 CO Channel Map
 
-.. image:: images/ic443_channel_map.png
+.. image:: _images/ic443_channel_map.png
    :target: ic443/ic443_channel_map.html
 
 * IC443 CO Stamps
 
-.. image:: images/ic443_stamps.png
+.. image:: _images/ic443_stamps.png
    :target: ic443/ic443_stamps.html
 
 
 * IC443 CO PV Map
 
-.. image:: images/ic443_pv_map.png
+.. image:: _images/ic443_pv_map.png
    :target: ic443/ic443_pv_map.html
 
 * Ha and MIPS 24um of LBVs
 
-.. image:: images/fig_lbvs.png
+.. image:: _images/fig_lbvs.png
    :target: lbvs/fig_lbvs.html
 
 
 
 * CfA Survey
 
-.. image:: images/cfa_survey.png
+.. image:: _images/cfa_survey.png
    :target: cfasurvey/cfasurvey.html
 
 * WHAM All Sky Map
 
-.. image:: images/allsky.png
+.. image:: _images/allsky.png
    :target: allsky/allsky.html
 
 * Galactic plane in All Sky Maps
 
-.. image:: images/allsky_galactic_proj_05.png
+.. image:: _images/allsky_galactic_proj_05.png
    :target: allsky/allsky_galactic_proj.html
 
 
