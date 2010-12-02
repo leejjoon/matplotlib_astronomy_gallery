@@ -20,24 +20,35 @@ Data preparation
    d_R, h_R = f_R[0].data, f_R[0].header
 
 We create an axes using pywcsgrid2. We use header information of the
-X-ray image. Note that the data coordinate of the pywcsgrid2's Axes is
-pixel coordinate of the given header. Then we can show the image as.
+X-ray image. 
 
 .. plot::
    :include-source:
    :context:
+   :nofigs:
 
    import pywcsgrid2
+   plt.figure(1, figsize=(5,5))
    ax = pywcsgrid2.subplot(111, header=h_X)
+
+Note that the data coordinate of the pywcsgrid2's Axes is
+pixel coordinate of the given header. Thus we can show the image as.
+
+.. plot::
+   :include-source:
+   :context:
+   :inlineonly:
+
    im = ax.imshow(d_X, origin="lower", cmap=plt.cm.gray_r)
    im.set_clim(0.11, 0.7)
 
-We adjust the x- and y-lim. Remember, these are in pixel
+We now adjust the x- and y-lim. Remember, these are in pixel
 coordinate. And turn off auto adjustment of x- and y-lim.
 
 .. plot::
    :include-source:
    :context:
+   :inlineonly:
 
    ax.set_xlim(363, 827)
    ax.set_ylim(349, 761)
@@ -53,6 +64,7 @@ is interpreted as world coordinate in fk5 (in degree).
 .. plot::
     :include-source:
     :context:
+    :inlineonly:
 
     ax["fk5"].plot([290.896], [14.1669], "w+", ms=9, mew=2, zorder=3)
 
@@ -62,6 +74,7 @@ we use patheffects.
 .. plot::
     :include-source:
     :context:
+    :inlineonly:
 
     # annotate XN and XS
     from matplotlib.patheffects import withStroke
@@ -80,18 +93,19 @@ Now we draw contour lines of radio images. The radio fits has
 different wcs information than the X-ray one. We use pywcsgrid2's
 parasite axes feature. If we index a pywcsgrid2's axes with a pyfits
 header, it creates an parasite axes whose data coordinate is that of
-the pixel coordinate of the given header. For example, in the below,
-we index as "ax[h_R]". This returns an axes whose data coordinate is
-that of the radio file.
+the pixel coordinate of the given header. In the example
+below, we index as "ax[h_R]". This returns an axes whose data
+coordinate is that of the radio file(h_R).
 
 .. plot::
    :include-source:
    :context:
+   :inlineonly:
 
    cont = ax[h_R].contour(d_R,
                          [40, 60, 80, 100, 150, 200,
                           300, 500, 1000], colors="w")
-   [cl.set_color("0.4") for cl in cont.collections] # change contour colors
+   [cl.set_color("0.4") for cl in cont.collections] # to change contour colors
 
 
 Put more annotations with arrow.
@@ -99,6 +113,7 @@ Put more annotations with arrow.
 .. plot::
     :include-source:
     :context:
+    :inlineonly:
 
     # Mark W51C, W51A, W51B
     kwargs = dict(arrowprops=dict(arrowstyle="->", ec=".5",
@@ -123,6 +138,7 @@ Using pyregion module, you can draw ds9 region files.
 .. plot::
     :include-source:
     :context:
+    :inlineonly:
 
     # draw XMM Mos region
     import pyregion
@@ -140,12 +156,21 @@ As a last step, we show a line of "b=0". We use floating axis feature.
 .. plot::
     :include-source:
     :context:
+    :inlineonly:
+   
+    ax.axis["b=0"] = ax["gal"].new_floating_axis(1, 0.)
 
-    # draw b=0 line
-    axis = ax["gal"].new_floating_axis(1, 0.)
-    axis.toggle(all=False, label=True)
-    axis.label.set_text(r"$b=0^{\circ}$")
-    ax.axis["b=0"] = axis
+This creates a floating axis in galactic coordinates whose second
+coordinate (first argument 1. Index starts from 0) has a value of 0.
+We disable ticks and ticklabels and set axis label.
+
+.. plot::
+    :include-source:
+    :context:
+    :inlineonly:
+
+    ax.axis["b=0"].toggle(all=False, label=True)
+    ax.axis["b=0"].label.set_text(r"$b=0^{\circ}$") 
 
 
 .. plot::
