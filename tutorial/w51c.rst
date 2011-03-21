@@ -9,6 +9,9 @@ Data preparation
    :context:
    :nofigs:
 
+   plt.close('all')
+
+
    import pyfits
    import scipy.ndimage as ni
 

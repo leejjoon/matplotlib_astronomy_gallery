@@ -75,7 +75,7 @@ def get_LAB_healpix_data():
     return healpix_data
 
 
-if __name__ == '__main__':
+if 1:
     
     proj_list = ["CYP", "CEA", "CAR", "MER", "SFL", "PAR", "MOL", ]
 
