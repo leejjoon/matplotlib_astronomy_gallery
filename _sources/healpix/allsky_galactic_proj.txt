@@ -1,0 +1,9 @@
+
+All-Sky Plot : Galactic plane in All Sky Maps
+=============================================
+
+* requires git version of matplotlib or future release (>1.0.x)
+* data file from `here <http://lambda.gsfc.nasa.gov/product/foreground/fg_LAB_HI_Survey_get.cfm>`_
+
+.. plot:: healpix/allsky_galactic_proj.py
+   :include-source:

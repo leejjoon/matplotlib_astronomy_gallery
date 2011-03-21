@@ -1,0 +1,9 @@
+
+All-Sky Plot : WHAM
+===================
+
+* requires svn version of matplotlib or future release (>1.0.x)
+* data file from `here <http://lambda.gsfc.nasa.gov/product/foreground/fg_LAB_HI_Survey_get.cfm>`_
+
+.. plot:: allsky/allsky.py
+   :include-source:

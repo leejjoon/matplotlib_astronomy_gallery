@@ -40,7 +40,10 @@
   <div class="section" id="w51c-x-ray-and-radio">
 <h1>W51C X-ray and Radio<a class="headerlink" href="#w51c-x-ray-and-radio" title="Permalink to this headline">¶</a></h1>
 <p>Data preparation</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyfits</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="s">&#39;all&#39;</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">pyfits</span>
 <span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="kn">as</span> <span class="nn">ni</span>
 
 <span class="n">f_X</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;w51c/xselrosat_image.xsl&quot;</span><span class="p">)</span>
