@@ -5,12 +5,15 @@ W51C X-ray and Radio
 Data preparation
 
 .. plot::
-   :include-source:
-   :context:
    :nofigs:
 
    plt.close('all')
 
+
+.. plot::
+   :include-source:
+   :context:
+   :nofigs:
 
    import pyfits
    import scipy.ndimage as ni
@@ -23,7 +26,7 @@ Data preparation
    d_R, h_R = f_R[0].data, f_R[0].header
 
 We create an axes using pywcsgrid2. We use header information of the
-X-ray image. 
+X-ray image.
 
 .. plot::
    :include-source:
@@ -160,7 +163,7 @@ As a last step, we show a line of "b=0". We use floating axis feature.
     :include-source:
     :context:
     :inlineonly:
-   
+
     ax.axis["b=0"] = ax["gal"].new_floating_axis(1, 0.)
 
 This creates a floating axis in galactic coordinates whose second
@@ -173,7 +176,7 @@ We disable ticks and ticklabels and set axis label.
     :inlineonly:
 
     ax.axis["b=0"].toggle(all=False, label=True)
-    ax.axis["b=0"].label.set_text(r"$b=0^{\circ}$") 
+    ax.axis["b=0"].label.set_text(r"$b=0^{\circ}$")
 
 
 .. plot::
