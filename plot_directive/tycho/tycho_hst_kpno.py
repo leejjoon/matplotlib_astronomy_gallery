@@ -90,7 +90,7 @@ def imshow_hst(ax, cax, f_hst):
     d_hst = gaussian_filter(f_hst[0].data.astype("d"), 1.5)
     im_hst = ax.imshow(d_hst,
                        origin="lower",
-                       interpolation="nearest",
+                       interpolation="none",
                        cmap=colormap)
 
     im_hst.set_clim(0.0022, 0.0087)
@@ -106,7 +106,7 @@ def imshow_hst(ax, cax, f_hst):
 def imshow_kpno(ax, cax, f_kpno):
     im_kpno = ax.imshow_affine(f_kpno[0].data,
                                origin="lower", cmap=colormap,
-                               interpolation="nearest",
+                               interpolation="none",
                                )
     im_kpno.set_clim(39, 90)
     if cax:

@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>LMC &mdash; Matplotlib Gallery For Astronomy v0.1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Matplotlib Gallery For Astronomy v0.1.1 documentation" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lmc">
+<h1>LMC<a class="headerlink" href="#lmc" title="Permalink to this headline">¶</a></h1>
+<p>One of the strength of <em>pywcsgrid2</em> is its ability to handle curved
+coordinate system. This is especially useful for images of large field
+of view (or all-sky maps) where the sky curvature is significant.
+Here we demosntrate this with the IRAS image of Large Magellanic Cloud.</p>
+<p>Data preparation</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyfits</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;tutorial/lmc.fits&quot;</span><span class="p">)</span>
+<span class="n">d</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
+</pre></div>
+</div>
+<p>We create a subplot using pywcsgrid2 with the header information.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pywcsgrid2</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mf">3.5</span><span class="p">])</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pywcsgrid2</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">h</span><span class="p">)</span> <span class="c"># this is pywcsgrid2 version of</span>
+                                       <span class="c"># mpl&#39;s subplot command.</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/inline/0fa2723d2c.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/inline/0fa2723d2c.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/0fa2723d2c.png" src="../_images/0fa2723d2c.png" />
+</div>
+<p>pywcsgrid2.subplot is analgous to mpl&#8217;s subplot command. In addtion to
+usual mpl&#8217;s subplot parameters (it internally calls mpls&#8217;s subplot
+command so all its argument will work), a user shoud specify the wcs
+information; here we provide header object (pyfits must be used).
+Note that the data coordinate of the pywcsgrid2&#8217;s Axes is pixel
+coordinate of the given header. The coordinate is 0-based, i.e.,
+center of the bottom-left corner pixel has the coordinate of (0,
+0). Note that newly created axes by default have x, y limits of (0,
+1), which is the default behavior of matplolib.</p>
+<p>To show the image data, you just call imshow, as you do with
+matpltolib.  Since the data coordinate is pixel coordinate of the
+given image, simple imshow is sufficient here.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">&quot;low&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+          <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/inline/0fce3e23e8.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/inline/0fce3e23e8.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/0fce3e23e8.png" src="../_images/0fce3e23e8.png" />
+</div>
+<p>(Note that you need to call plt.draw() or plt.show() to see changed figure).</p>
+<p>Note that some ticks are rotated (this is more clear in the high
+res. figure). In pywcsgrid2, ticks are directed along the coordinate
+lines (i.e., grid lines). This can be seen more clearly if we draw
+grid lines.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/inline/52be256ef0.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/inline/52be256ef0.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/52be256ef0.png" src="../_images/52be256ef0.png" />
+</div>
+<p>To change the viewing limits of axes, simply call <em>set_xlim</em> or
+<em>set_ylim</em> remembering that the values should be given in pixel
+coordinate. Of course you can use zoom and pan button in the toolbar.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span> <span class="mf">76.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">25.5</span><span class="p">,</span> <span class="mf">94.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/inline/229319ae5c.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/inline/229319ae5c.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/229319ae5c.png" src="../_images/229319ae5c.png" />
+</div>
+<p><em>pywcsgrid2</em> has some support for floating axes. You must specify the
+limits of longitude and latitude.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pyfits</span><span class="o">,</span> <span class="nn">pywcsgrid2</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">pyfits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;tutorial/lmc.fits&quot;</span><span class="p">)</span>
+
+<span class="n">extremes</span><span class="o">=</span><span class="mf">93.0</span><span class="p">,</span> <span class="mf">66.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">64</span>
+<span class="c"># ra : 93.0 ~ 66.5 (in degree, the order matters)</span>
+<span class="c"># dec : -73.5 ~ -64</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pywcsgrid2</span><span class="o">.</span><span class="n">floating_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">,</span>
+                                 <span class="n">extremes</span><span class="o">=</span><span class="n">extremes</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s">&quot;low&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+          <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray_r</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>[<a class="reference external" href="../plot_directive/inline/4ffda117e2.hires.png">hires.png</a>, <a class="reference external" href="../plot_directive/inline/4ffda117e2.pdf">pdf</a>]</p>
+<div class="figure">
+<img alt="../_images/4ffda117e2.png" src="../_images/4ffda117e2.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/tutorial/lmc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Matplotlib Gallery For Astronomy v0.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2009, Jae-Joon Lee.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>
