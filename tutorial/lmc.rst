@@ -108,3 +108,10 @@ limits of longitude and latitude.
              cmap=plt.cm.gray_r)
 
    ax.grid()
+
+.. plot::
+   :context:
+   :nofigs:
+
+   plt.close('all')
+
