@@ -66,7 +66,7 @@ def get_LAB_healpix_data():
     
     #ordering = f[1].header["ordering"]
     nside = f[1].header["nside"]
-    data = f[1].data["temperature"]
+    data = f[1].data.field("temperature")
     
     healpix_data = healpix_helper.HealpixData(nside, data.flat,
                                               nested=False, flipy=True,
@@ -77,7 +77,7 @@ def get_LAB_healpix_data():
 
 if 1:
     
-    proj_list = ["CYP", "CEA", "CAR", "MER", "SFL", "PAR", "MOL", ]
+    proj_list = ["CYP", "CEA", "CAR", "MER", "SFL", "PAR", "MOL", "AIT"]
 
     DO_HEALPIX = True
 
