@@ -26,7 +26,6 @@ def annotate_w51c(ax, header):
     # draw + to mark center
     reg = pyregion.open("remnant_center.reg")
     cx, cy = reg[0].coord_list[:2]
-    print cx, cy
     ax["fk5"].plot([290.896], [14.1669], "w+", ms=9, mew=2, zorder=3)
 
     # draw b=0 line
