@@ -105,8 +105,3 @@ if 1:
 
     plt.show()
 
-    if 0:
-        fig.savefig("w51_rosat.eps", bbox_inches="tight")
-
-    ## (b)
-

@@ -24,9 +24,14 @@ sys.path.insert(0, os.path.abspath('./sphinxext'))
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.todo',
               'matplotlib.sphinxext.only_directives',
-              'plot_directive_jj',
               #'github_sphinx',
               ]
+
+if sys.version_info[0] >= 3:
+    extensions.append("plot_directive_jj_py3")
+else:
+    extensions.append("plot_directive_jj")
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

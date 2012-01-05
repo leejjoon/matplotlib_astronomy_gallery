@@ -50,8 +50,3 @@ ax.set_xlabel("Right Ascension (J2000)")
 ax.set_ylabel("Declination (J2000)")
 
 plt.show()
-
-if 0:
-    ax.set_rasterization_zorder(2.1)
-    cax.set_rasterization_zorder(2.1)
-    plt.savefig("a.eps", bbox_inches="tight", dpi=300)

@@ -18,11 +18,11 @@ Data preparation
    import pyfits
    import scipy.ndimage as ni
 
-   f_X = pyfits.open("w51c/xselrosat_image.xsl")
+   f_X = pyfits.open("xselrosat_image.xsl")
    d_X = ni.gaussian_filter(f_X[0].data.astype("d"), 5)
    h_X = f_X[0].header
 
-   f_R = pyfits.open("w51c/w51_vgps.fits")
+   f_R = pyfits.open("w51_vgps.fits")
    d_R, h_R = f_R[0].data, f_R[0].header
 
 We create an axes using pywcsgrid2. We use header information of the
@@ -148,7 +148,7 @@ Using pyregion module, you can draw ds9 region files.
 
     # draw XMM Mos region
     import pyregion
-    reg = pyregion.open("w51c/mos_fov.reg").as_imagecoord(h_X)
+    reg = pyregion.open("mos_fov.reg").as_imagecoord(h_X)
     patches, txts = reg.get_mpl_patches_texts()
     circ = patches[0]
     ax.add_patch(circ)
@@ -179,8 +179,3 @@ We disable ticks and ticklabels and set axis label.
     ax.axis["b=0"].label.set_text(r"$b=0^{\circ}$")
 
 
-.. plot::
-   :context:
-   :nofigs:
-
-   plt.close('all')

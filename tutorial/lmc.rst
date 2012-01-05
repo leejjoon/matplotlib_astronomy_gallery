@@ -21,7 +21,7 @@ Data preparation
    :nofigs:
 
    import pyfits
-   f = pyfits.open("tutorial/lmc.fits")
+   f = pyfits.open("lmc.fits")
    d, h = f[0].data, f[0].header
 
 We create a subplot using pywcsgrid2 with the header information.
@@ -95,7 +95,7 @@ limits of longitude and latitude.
 
    plt.figure(figsize=[5, 5])
 
-   f = pyfits.open("tutorial/lmc.fits")
+   f = pyfits.open("lmc.fits")
 
    extremes=93.0, 66.5, -73.5, -64
    # ra : 93.0 ~ 66.5 (in degree, the order matters)

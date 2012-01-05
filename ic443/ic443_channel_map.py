@@ -100,6 +100,4 @@ for im in images:
 
 plt.show()
 
-if 0:
-    plt.savefig("co_channel_maps.eps", dpi=70, bbox_inches="tight")
 
