@@ -274,7 +274,6 @@ def setup(app):
                'format': _option_format,
                'context': directives.flag,
                'nofigs': directives.flag,
-               'inlineonly': directives.flag,
                'encoding': directives.encoding
                }
 
@@ -488,8 +487,7 @@ def clear_state(plot_rcparams):
     matplotlib.rc_file_defaults()
     matplotlib.rcParams.update(plot_rcparams)
 
-def render_figures(code, code_path, output_dir, output_base,
-                   context, inlineonly,
+def render_figures(code, code_path, output_dir, output_base, context,
                    function_name, config):
     """
     Run a pyplot script and save the low and high res PNGs and a PDF
@@ -511,11 +509,6 @@ def render_figures(code, code_path, output_dir, output_base,
             formats.append((str(fmt[0]), int(fmt[1])))
         else:
             raise PlotError('invalid image format "%r" in plot_formats' % fmt)
-
-    if inlineonly:
-        # remove for figure directive
-        formats = formats[:1]
-
 
     # -- Try to determine if all images already exist
 
@@ -588,9 +581,7 @@ def render_figures(code, code_path, output_dir, output_base,
             images.append(img)
             for format, dpi in formats:
                 try:
-                    figman.canvas.figure.savefig(img.filename(format),
-                                                 bbox_inches="tight",
-                                                 dpi=dpi)
+                    figman.canvas.figure.savefig(img.filename(format), dpi=dpi)
                 except Exception,err:
                     raise PlotError(traceback.format_exc())
                 img.formats.append(format)
@@ -613,9 +604,6 @@ def run(arguments, content, options, state_machine, state, lineno):
 
     options.setdefault('include-source', config.plot_include_source)
     context = options.has_key('context')
-
-    inlineonly = options.has_key('inlineonly')
-    #del options['inlineonly']
 
     rst_file = document.attributes['source']
     rst_dir = os.path.dirname(rst_file)
@@ -700,7 +688,7 @@ def run(arguments, content, options, state_machine, state, lineno):
     # make figures
     try:
         results = render_figures(code, source_file_name, build_dir, output_base,
-                                 context, inlineonly, function_name, config)
+                                 context, function_name, config)
         errors = []
     except PlotError, err:
         reporter = state.memo.reporter
