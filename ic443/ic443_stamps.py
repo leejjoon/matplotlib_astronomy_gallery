@@ -86,15 +86,14 @@ if 1:
         06 17 29.3  +22 22 43
         06 18 03.7  +22 24 53
         """
-        import coords
-        p_list = [coords.Position("06:17:29.3  +22:22:43").j2000(),
-                  coords.Position("06:18:03.7  +22:24:53").j2000(),
+        p_list = [(94.37208333, 22.37861111),
+                  (94.51541666, 22.41472222),
                   (94.181357,22.543208)]
         for p1, ax in zip(p_list, [grid[4], grid[5], grid[2]]):
             ra, dec = p1
-            l1, = ax[wcs].plot([ra], [dec],
-                               "^", mec="k", mfc="w", mew=1, ms=8,
-                               zorder=3.1)
+            l1, = ax["fk5"].plot([ra], [dec],
+                                 "^", mec="k", mfc="w", mew=1, ms=8,
+                                 zorder=3.1)
 
         grid[-1].legend([l1], ["Maser"], loc=4, numpoints=1, handlelength=1,
                         prop=dict(size=10))
