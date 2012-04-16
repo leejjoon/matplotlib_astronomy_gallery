@@ -10,6 +10,9 @@ import pyfits
 
 class Velo(object):
     def __init__(self, header):
+        import sys
+        if sys.version_info >= (3,0):
+            header=repr(header.ascard).encode("ascii")
         wcs = pywcs.WCS(header)
         self.wcs_vel = wcs.sub([3])
 

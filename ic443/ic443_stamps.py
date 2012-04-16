@@ -42,7 +42,11 @@ def setup_axes(fig, imx_c, imy_c, h):
 if 1:
 
     c = pyfits.open("ic443_coN.raw.reorder.han-ind.contsub1.fits")
-    wcs = pywcs.WCS(c[0].header).sub([1, 2])
+    header = c[0].header
+    import sys
+    if sys.version_info >= (3,0):
+        header=repr(header.ascard).encode("ascii")
+    wcs = pywcs.WCS(header).sub([1, 2])
     cube = cube.Cube(c[0].data, c[0].header)
 
     imx_c = [ 212.,  162.,  148.,  152., 93.,   57.  ,   57.,   48.,
@@ -115,13 +119,13 @@ if 1:
     mynorm.vmax=5
 
     # add labels
-    from itertools import count, izip
+    from itertools import count
     try:
         from matplotlib.patheffects import withStroke
     except ImportError:
         withStroke = None
 
-    for i, ax, pc in izip(count(1), grid, peak_channel_list):
+    for i, ax, pc in zip(count(1), grid, peak_channel_list):
         v = cube.ax.imz2skyz(pc)/1000.
         txt = anchored_artists.AnchoredText("SC %02d : $%4.1f$ km s$^{-1}$" % (i, v),
                                             loc=2,
